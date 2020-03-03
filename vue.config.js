@@ -16,7 +16,15 @@ module.exports = {
       .options({
         extract: false
       }) // 不解析为文件
-      .end();
+      .end().use('svgo-loader').loader('svgo-loader')
+      .tap(options => ({
+        ...options,
+        plugins: [{
+          removeAttrs: {
+            attrs: 'fill'
+          }
+        }]
+      })).end();
     config
       .plugin("svg-sprite")
       .use(require("svg-sprite-loader/plugin"), [{
