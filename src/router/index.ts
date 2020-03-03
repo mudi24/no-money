@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Money from '@/views/Money.vue';
+import Home from '@/views/Home.vue';
 import Labels from '@/views/Labels.vue';
 import Statistics from '@/views/Statistics.vue';
 import Notfound from '@/views/Notfound.vue';
@@ -13,11 +14,11 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: '/',
-    redirect: '/money',
+    redirect: '/home',
   },
   {
-    path: '/money',
-    component: Money,
+    path: '/home',
+    component: Home,
   },
   {
     path: '/labels',
