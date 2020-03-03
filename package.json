@@ -1,5 +1,5 @@
 {
-  "name": "morney",
+  "name": "no-money",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -12,6 +12,7 @@
     "core-js": "^3.4.4",
     "dayjs": "^1.8.21",
     "register-service-worker": "^1.6.2",
+    "vant": "^2.5.3",
     "vue": "^2.6.10",
     "vue-class-component": "^7.0.2",
     "vue-property-decorator": "^8.3.0",
@@ -30,6 +31,7 @@
     "@vue/cli-service": "^4.1.0",
     "@vue/eslint-config-typescript": "^4.0.0",
     "@vue/test-utils": "1.0.0-beta.29",
+    "babel-plugin-import": "^1.13.0",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "lint-staged": "^9.5.0",

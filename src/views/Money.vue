@@ -1,15 +1,24 @@
 <template>
   <Layout class-prefix="layout">
     <NumberPad :value.sync="record.amount" @submit="saveRecord" />
-    <Tabs :value.sync="record.type" class-prefix="type" :data-source="recordTypeList" />
+    <Tabs
+      :value.sync="record.type"
+      class-prefix="type"
+      :data-source="recordTypeList"
+    />
     <div class="notes">
-      <FormItem field-name="备注" placeholder="在这里输入备注" :value.sync="record.notes" />
+      <FormItem
+        field-name="备注"
+        placeholder="在这里输入备注"
+        :value.sync="record.notes"
+      />
     </div>
     <Tags @update:value="onUpdateTags" />
+    <van-button type="warning">默认按钮</van-button>
   </Layout>
 </template>
 
-<style lang="scss" >
+<style lang="scss">
 .layout-content {
   display: flex;
   flex-direction: column-reverse;
@@ -26,6 +35,8 @@ import Tabs from "@/components/Tabs.vue";
 import FormItem from "@/components/Money/FormItem.vue";
 import Tags from "@/components/Money/Tags.vue";
 import recordTypeList from "@/constants/recordTypeList";
+import { Button } from "vant";
+Vue.use(Button);
 
 @Component({
   components: { Tags, FormItem, Tabs, NumberPad }
@@ -62,16 +73,8 @@ export default class Money extends Vue {
 }
 </script>
 
-
-
-// 数据迁移
-// const version = window.localStorage.getItem("version");
-// if (version === "0.0.1") {
-//   // 数据库升级，数据迁移
-//   recordList.forEach(record => {
-//     record.createdAt = new Date(2020, 0, 1);
-//   });
-//   // 保存数据
-//   window.localStorage.setItem("recordList", JSON.stringify(recordList));
-// }
-// window.localStorage.setItem("version", "0.0.2");
+// 数据迁移 // const version = window.localStorage.getItem("version"); // if
+(version === "0.0.1") { // // 数据库升级，数据迁移 // recordList.forEach(record
+=> { // record.createdAt = new Date(2020, 0, 1); // }); // // 保存数据 //
+window.localStorage.setItem("recordList", JSON.stringify(recordList)); // } //
+window.localStorage.setItem("version", "0.0.2");
