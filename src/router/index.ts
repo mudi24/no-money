@@ -5,6 +5,8 @@ import Labels from '@/views/Labels.vue';
 import Statistics from '@/views/Statistics.vue';
 import Notfound from '@/views/Notfound.vue';
 import EditLabel from '@/views/EditLabel.vue';
+import DiscoverMore from '@/views/DiscoverMore.vue';
+import UserInfo from '@/views/UserInfo.vue';
 
 Vue.use(VueRouter);
 
@@ -27,6 +29,12 @@ const routes = [
   }, {
     path: '/labels/edit/:id',
     component: EditLabel
+  }, {
+    path: '/DiscoverMore',
+    component: DiscoverMore
+  }, {
+    path: '/UserInfo',
+    component: UserInfo
   },
   {
     path: '*',
