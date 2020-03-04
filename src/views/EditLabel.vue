@@ -16,10 +16,11 @@
           </span>
           <span class="tagName">餐饮</span>
         </span>
-        <input type="text" value="0.00" @focus="showNumberPad" />
+        <input type="text" :value="value" @focus="showNumberPad" />
       </label>
+      {{value}}
       <Tags></Tags>
-      <NumberPad :show="show"></NumberPad>
+      <NumberPad :show="show" :value.sync="value"></NumberPad>
     </main>
   </Layout>
 </template>
@@ -33,9 +34,7 @@ import NumberPad from "@/components/Money/NumberPad.vue";
 @Component({ components: { Tags, NumberPad } })
 export default class EditLabel extends Vue {
   show = "hide";
-  mounted() {
-    console.log(this.show);
-  }
+  value = "0";
   showNumberPad() {
     this.show = "show";
   }

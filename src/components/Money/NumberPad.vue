@@ -1,14 +1,8 @@
 <template>
   <div class="numberPad" :class="`${show}`">
-    <!-- <div class="output">{{output}}</div> -->
     <label class="notes">
       <span class="name">备注：</span>
-      <input
-        type="text"
-        placeholder="点击输入备注"
-        :value="value"
-        @input="onValueChange($event.target.value)"
-      />
+      <input type="text" placeholder="点击输入备注" @input="onValueChange($event.target.value)" />
     </label>
     <div class="buttons">
       <button @click="inputContent">1</button>
@@ -18,7 +12,7 @@
       <button @click="inputContent">4</button>
       <button @click="inputContent">5</button>
       <button @click="inputContent">6</button>
-      <button @click="inputContent">+</button>
+      <button @click="add">+</button>
       <button @click="inputContent">7</button>
       <button @click="inputContent">8</button>
       <button @click="inputContent">9</button>
@@ -36,27 +30,34 @@ import { Component, Prop } from "vue-property-decorator";
 
 @Component
 export default class NumberPad extends Vue {
-  @Prop() readonly value!: number;
+  @Prop() readonly value!: string;
   @Prop() readonly show!: string;
-  output = this.value.toString();
+  output = this.value;
   inputContent(event: MouseEvent) {
     const button = event.target as HTMLButtonElement; //断言写法1
     const input = button.textContent!; // 断言写法2 断言它不是null
     if (this.output.length === 16) {
       return;
     }
-    if (this.output === "0") {
+    if (
+      this.output === "0" ||
+      this.output === "0.0" ||
+      this.output === "0.00"
+    ) {
       if ("0123456789".indexOf(input) >= 0) {
         this.output = input;
       } else {
         this.output += input;
       }
+      this.$emit("update:value", this.output);
       return;
     }
     if (this.output.indexOf(".") >= 0 && input === ".") {
+      this.$emit("update:value", this.output);
       return;
     }
     this.output += input;
+    this.$emit("update:value", this.output);
   }
   remove() {
     if (this.output.length === 1) {
@@ -64,9 +65,24 @@ export default class NumberPad extends Vue {
     } else {
       this.output = this.output.slice(0, -1);
     }
+    this.$emit("update:value", this.output);
   }
   clear() {
     this.output = "0";
+    this.$emit("update:value", this.output);
+  }
+  add() {
+    console.log(this.output);
+    const index = this.output.indexOf("+");
+    if (index >= 0) {
+      const array = this.output.split("+");
+      console.log(array);
+      this.output = (parseFloat(array[0]) + parseFloat(array[1])).toString();
+      console.log(this.output);
+      this.$emit("update:value", this.output);
+    }
+    this.output = parseFloat(this.output).toString() + "+";
+    this.$emit("update:value", this.output);
   }
   ok() {
     this.$emit("update:value", parseFloat(this.output));
