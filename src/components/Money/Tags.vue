@@ -1,15 +1,26 @@
 <template>
   <div class="tags">
-    <div class="new">
+    <!-- <div class="new">
       <button @click="createTag">新增标签</button>
-    </div>
+    </div>-->
     <ul class="current">
       <li
         v-for="tag in tagList"
-        :key="tag.id"
+        :key="tag.value"
         @click="toggle(tag)"
         :class="{selected:selectedTags.indexOf(tag)>=0}"
-      >{{tag.name}}</li>
+      >
+        <span class="icon-wrapper">
+          <Icon :name="`${tag.name}`"></Icon>
+        </span>
+        <span class="tagName">{{tag.value}}</span>
+      </li>
+      <li>
+        <span class="icon-wrapper">
+          <Icon name="add"></Icon>
+        </span>
+        <span class="tagName">添加</span>
+      </li>
     </ul>
   </div>
 </template>
@@ -21,7 +32,7 @@ import TagHelper from "@/mixins/TagHelper";
 import { mixins } from "vue-class-component";
 
 @Component
-export default class Notes extends mixins(TagHelper) {
+export default class Tags extends mixins(TagHelper) {
   selectedTags: string[] = [];
   created() {
     this.$store.commit("fetchTags");
@@ -43,30 +54,48 @@ export default class Notes extends mixins(TagHelper) {
 
 <style lang='scss' scoped>
 .tags {
-  background: white;
-  font-size: 14px;
-  padding: 16px;
-  flex-grow: 1;
+  height: 60vh;
+  background: #fefefe;
   display: flex;
-  flex-direction: column-reverse;
+  flex-wrap: wrap;
+  margin: 12px 0;
+  padding: 8px;
   > .current {
+    width: 100%;
+    height: 100%;
+    align-content: flex-start;
     display: flex;
     flex-wrap: wrap;
-    overflow: auto;
     > li {
-      $h: 24px;
-      $bg: #d9d9d9;
-      background: $bg;
-      height: $h;
-      line-height: $h;
-      //border-radius:50% 默认是宽度的50%，这里应该是高度的50%
-      border-radius: $h/2;
-      padding: 0 16px;
-      margin-right: 12px;
-      margin-top: 4px;
+      width: 20%;
+      height: 20%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      > .icon-wrapper {
+        width: 36px;
+        height: 36px;
+        margin: 8px;
+        background: #f4f5ff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        > .icon {
+          width: 30px;
+          height: 30px;
+          color: gray;
+        }
+        > .tagName {
+          margin: 8px;
+        }
+      }
       &.selected {
-        background: darken($bg, 30%);
-        color: white;
+        .icon {
+          color: #fee0a5;
+        }
       }
     }
   }

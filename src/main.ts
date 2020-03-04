@@ -6,7 +6,7 @@ import store from './store'
 import Nav from './components/Nav.vue'
 import Layout from './components/Layout.vue'
 import Icon from './components/Icon.vue'
-import { DropdownMenu, DropdownItem } from "vant";
+import { DropdownMenu, DropdownItem, } from "vant";
 
 Vue.use(DropdownMenu);
 Vue.use(DropdownItem);

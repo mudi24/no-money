@@ -7,8 +7,8 @@ type RecordItem = {
   // createdAt?: Date; // TS 还可以写类(构造函数)
 };
 type Tag = {
-  id: string,
-  name: string
+  name: string,
+  value: string
 }
 type TagListModel = {
   data: Tag[]

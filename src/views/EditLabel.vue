@@ -9,41 +9,22 @@
       <button>保存</button>
     </header>
     <main class="content">
-      <div class="amount">
-        <span class="icon">餐饮</span>
-        <span class="icon">0.00</span>
-      </div>
-      <ol class="tags">
-        <li>餐饮</li>
-        <li>购物</li>
-        <li>交通</li>
-        <li>炸物</li>
-        <li>理财</li>
-        <li>购物</li>
-        <li>餐饮</li>
-        <li>购物</li>
-        <li>交通</li>
-        <li>炸物</li>
-        <li>理财</li>
-        <li>购物</li>
-      </ol>
+      <label class="amount">
+        <span class="name">餐饮</span>
+        <input type="text" value="0.00" />
+      </label>
+      <Tags></Tags>
     </main>
   </Layout>
 </template>
 
-<script lang='js'>
+<script lang='ts'>
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import Tags from "@/components/Money/Tags.vue";
 
-export default {
-  components: {},
-  data () {
-    return {
-
-    };
-  },
-  methods: {
-
-  }
-};
+@Component({ components: { Tags } })
+export default class EditLabel extends Vue {}
 </script>
 
 <style lang='scss' scoped>
@@ -82,17 +63,10 @@ export default {
     padding: 12px;
     display: flex;
     justify-content: space-between;
-  }
-  .tags {
-    height: 50vh;
-    background: #fefefe;
-    display: flex;
-    flex-wrap: wrap;
-    margin: 12px 0;
-    > li {
-      border: 1px solid #000;
-      width: 20%;
-      height: 60px;
+    > input {
+      text-align: right;
+      background: transparent;
+      border: none;
     }
   }
 }

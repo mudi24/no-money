@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import clone from '@/lib/clone'
-import createId from '@/lib/createId'
 import router from '@/router'
 
 Vue.use(Vuex) // 把 store 绑到 Vue.prototype.$store = store
@@ -32,30 +31,30 @@ const store = new Vuex.Store({
     fetchTags(state) {
       state.tagList = JSON.parse(window.localStorage.getItem('tagList') || '[]')
       if (!state.tagList || state.tagList.length === 0) {
-        store.commit('createTag', '衣')
-        store.commit('createTag', '食')
-        store.commit('createTag', '住')
-        store.commit('createTag', '行')
+        store.commit('createTag', { name: 'food', value: '餐饮' })
+        store.commit('createTag', { name: 'play', value: '娱乐' })
+        store.commit('createTag', { name: 'sports', value: '运动' })
+        store.commit('createTag', { name: 'shopping', value: '购物' })
+        store.commit('createTag', { name: 'traffic', value: '交通' })
       }
     },
-    setCurrentTag(state, id: string) {
-      state.currentTag = state.tagList.filter(t => t.id === id)[0];
+    setCurrentTag(state, name: string) {
+      state.currentTag = state.tagList.filter(t => t.name === name)[0];
     },
-    createTag(state, name: string) {
+    createTag(state, payload: Tag) {
       state.createTagError = null
       const names = state.tagList.map((item: any) => item.name)
       if (names.indexOf(name) >= 0) {
         state.createTagError = new Error('tag name duplicated')
         return
       }
-      const id = createId().toString()
-      state.tagList.push({ id, name: name })
+      state.tagList.push(payload)
       store.commit('saveTags')
     },
-    removeTag(state, id: string) {
+    removeTag(state, name: string) {
       let index = -1
       for (let i = 0; i < state.tagList.length; i++) {
-        if (state.tagList[i].id === id) {
+        if (state.tagList[i].name === name) {
           index = i
           break
         }
@@ -68,19 +67,18 @@ const store = new Vuex.Store({
         window.alert("删除失败");
       }
     },
-    updateTag(state, payload: { id: string, name: string }) {
-      const { id, name } = payload
-      const idList = state.tagList.map(item => item.id)
-      if (idList.indexOf(id) >= 0) {
-        const names = state.tagList.map(item => item.name)
-        if (names.indexOf(name) >= 0) {
-          window.alert()
-          return 'duplicated'
-        } else {
-          const tag = state.tagList.filter(item => item.id === id)[0]
-          tag.name = name
-          store.commit('saveTags')
+    updateTag(state, payload: Tag) {
+      const { name, value } = payload
+      const nameList = state.tagList.map(item => item.name)
+      if (nameList.indexOf(name) >= 0) {
+        const values = state.tagList.map(item => item.value)
+        if (values.indexOf(value) >= 0) {
+          window.alert('标签名称重复了')
+          return
         }
+      } else {
+        state.tagList.push(payload)
+        store.commit('saveTags')
       }
     },
     saveTags(state) {
