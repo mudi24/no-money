@@ -1,5 +1,5 @@
 <template>
-  <Layout class>
+  <Layout class-prefix="editLabel">
     <header class="header">
       <button>取消</button>
       <span class="toggleContent">
@@ -10,10 +10,16 @@
     </header>
     <main class="content">
       <label class="amount">
-        <span class="name">餐饮</span>
-        <input type="text" value="0.00" />
+        <span class="name">
+          <span class="icon-wrapper">
+            <Icon name="food"></Icon>
+          </span>
+          <span class="tagName">餐饮</span>
+        </span>
+        <input type="text" value="0.00" @focus="showNumberPad" />
       </label>
       <Tags></Tags>
+      <NumberPad :show="show"></NumberPad>
     </main>
   </Layout>
 </template>
@@ -22,12 +28,24 @@
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import Tags from "@/components/Money/Tags.vue";
+import NumberPad from "@/components/Money/NumberPad.vue";
 
-@Component({ components: { Tags } })
-export default class EditLabel extends Vue {}
+@Component({ components: { Tags, NumberPad } })
+export default class EditLabel extends Vue {
+  show = "hide";
+  mounted() {
+    console.log(this.show);
+  }
+  showNumberPad() {
+    this.show = "show";
+  }
+}
 </script>
 
 <style lang='scss' scoped>
+.editLabel-wrapper {
+  overflow: hidden;
+}
 .header {
   display: flex;
   justify-content: space-between;
@@ -60,14 +78,42 @@ export default class EditLabel extends Vue {}
   background: #f0f3f6;
   .amount {
     background: #fefefe;
-    padding: 12px;
+    padding: 8px;
     display: flex;
     justify-content: space-between;
+    .name {
+      display: flex;
+      justify-content: center;
+      .icon-wrapper {
+        width: 36px;
+        height: 36px;
+        margin: 8px;
+        background: #f4f5ff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        > .icon {
+          width: 30px;
+          height: 30px;
+          color: gray;
+        }
+      }
+      > .tagName {
+        margin: auto 0;
+      }
+    }
     > input {
       text-align: right;
       background: transparent;
       border: none;
     }
   }
+
+  // .numberPad {
+  //   position: absolute;
+  //   left: 0;
+  //   bottom: -50%;
+  // }
 }
 </style>

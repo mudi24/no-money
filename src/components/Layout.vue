@@ -3,7 +3,7 @@
     <div class="content" :class="classPrefix && `${classPrefix}-content`">
       <slot></slot>
     </div>
-    <Nav></Nav>
+    <Nav class="nav"></Nav>
   </div>
 </template>
 
@@ -18,10 +18,17 @@ export default {
 .layout-wrapper {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-}
-.content {
-  overflow: auto;
-  flex-grow: 1;
+  height: 100vh;
+  position: relative;
+  .content {
+    overflow: auto;
+    flex-grow: 1;
+  }
+  .nav {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+  }
 }
 </style>

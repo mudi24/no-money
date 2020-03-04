@@ -1,6 +1,15 @@
 <template>
-  <div class="numberPad">
-    <div class="output">{{output}}</div>
+  <div class="numberPad" :class="`${show}`">
+    <!-- <div class="output">{{output}}</div> -->
+    <label class="notes">
+      <span class="name">备注：</span>
+      <input
+        type="text"
+        placeholder="点击输入备注"
+        :value="value"
+        @input="onValueChange($event.target.value)"
+      />
+    </label>
     <div class="buttons">
       <button @click="inputContent">1</button>
       <button @click="inputContent">2</button>
@@ -9,11 +18,12 @@
       <button @click="inputContent">4</button>
       <button @click="inputContent">5</button>
       <button @click="inputContent">6</button>
-      <button @click="clear">清空</button>
+      <button @click="inputContent">+</button>
       <button @click="inputContent">7</button>
       <button @click="inputContent">8</button>
       <button @click="inputContent">9</button>
-      <button @click="ok" class="ok">OK</button>
+      <button @click="ok" class="ok">确认</button>
+      <button @click="clear">清空</button>
       <button @click="inputContent" class="zero">0</button>
       <button @click="inputContent">.</button>
     </div>
@@ -27,6 +37,7 @@ import { Component, Prop } from "vue-property-decorator";
 @Component
 export default class NumberPad extends Vue {
   @Prop() readonly value!: number;
+  @Prop() readonly show!: string;
   output = this.value.toString();
   inputContent(event: MouseEvent) {
     const button = event.target as HTMLButtonElement; //断言写法1
@@ -69,6 +80,33 @@ export default class NumberPad extends Vue {
 @import "~@/assets/style/helper.scss";
 
 .numberPad {
+  background: #393960;
+  color: white;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: -50%;
+  transition: all 0.3s;
+  &.show {
+    bottom: 60px;
+  }
+  .notes {
+    padding: 8px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    padding-left: 16px;
+    > .name {
+      padding-right: 16px;
+    }
+    input {
+      height: 40px;
+      flex-grow: 1;
+      background: transparent;
+      border: none;
+      padding-right: 16px;
+    }
+  }
   .output {
     @extend %clearFix;
     @extend %innerShadow;
@@ -84,42 +122,11 @@ export default class NumberPad extends Vue {
       height: 64px;
       float: left;
       background: transparent;
-      border: none;
+      border: 1px solid #8d8ea6;
       &.ok {
         height: 64 * 2px;
+        background: #25c489;
         float: right;
-      }
-      &.zero {
-        width: 25 * 2%;
-      }
-      $bg: #f2f2f2;
-      &:nth-child(1) {
-        background: $bg;
-      }
-      &:nth-child(2),
-      &:nth-child(5) {
-        background: darken($bg, 4%);
-      }
-      &:nth-child(3),
-      &:nth-child(6),
-      &:nth-child(9) {
-        background: darken($bg, 4 * 2%);
-      }
-      &:nth-child(4),
-      &:nth-child(7),
-      &:nth-child(10) {
-        background: darken($bg, 4 * 3%);
-      }
-      &:nth-child(8),
-      &:nth-child(11),
-      &:nth-child(13) {
-        background: darken($bg, 4 * 4%);
-      }
-      &:nth-child(14) {
-        background: darken($bg, 4 * 5%);
-      }
-      &:nth-child(12) {
-        background: darken($bg, 4 * 6%);
       }
     }
   }

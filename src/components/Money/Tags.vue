@@ -1,8 +1,5 @@
 <template>
   <div class="tags">
-    <!-- <div class="new">
-      <button @click="createTag">新增标签</button>
-    </div>-->
     <ul class="current">
       <li
         v-for="tag in tagList"
@@ -97,16 +94,6 @@ export default class Tags extends mixins(TagHelper) {
           color: #fee0a5;
         }
       }
-    }
-  }
-  > .new {
-    padding-top: 16px;
-    button {
-      background: transparent;
-      border: none;
-      color: #999;
-      border-bottom: 1px solid;
-      padding: 0 4px;
     }
   }
 }
