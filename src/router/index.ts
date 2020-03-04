@@ -28,13 +28,13 @@ const routes = [
     path: '/statistics',
     component: Statistics
   }, {
-    path: '/labels/edit/:id',
+    path: '/editLabel',
     component: EditLabel
   }, {
-    path: '/DiscoverMore',
+    path: '/discoverMore',
     component: DiscoverMore
   }, {
-    path: '/UserInfo',
+    path: '/userInfo',
     component: UserInfo
   },
   {
