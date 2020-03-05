@@ -30,34 +30,35 @@ import { Component, Prop } from "vue-property-decorator";
 
 @Component
 export default class NumberPad extends Vue {
-  @Prop() readonly value!: string;
+  @Prop() readonly amount!: string;
   @Prop() readonly show!: string;
-  output = this.value;
+  output = this.amount;
+  onValueChange(value: string) {
+    this.$emit("update:value", value);
+  }
   inputContent(event: MouseEvent) {
     const button = event.target as HTMLButtonElement; //断言写法1
     const input = button.textContent!; // 断言写法2 断言它不是null
     if (this.output.length === 16) {
       return;
     }
-    if (
-      this.output === "0" ||
-      this.output === "0.0" ||
-      this.output === "0.00"
-    ) {
+    if (this.output === "0" || this.output === "0.0") {
       if ("0123456789".indexOf(input) >= 0) {
         this.output = input;
       } else {
         this.output += input;
       }
-      this.$emit("update:value", this.output);
       return;
     }
     if (this.output.indexOf(".") >= 0 && input === ".") {
-      this.$emit("update:value", this.output);
+      if (this.output.indexOf("+") >= 0) {
+        if (this.output.split("+")[1].indexOf(".") < 0) {
+          this.output += input;
+        }
+      }
       return;
     }
     this.output += input;
-    this.$emit("update:value", this.output);
   }
   remove() {
     if (this.output.length === 1) {
@@ -65,24 +66,21 @@ export default class NumberPad extends Vue {
     } else {
       this.output = this.output.slice(0, -1);
     }
-    this.$emit("update:value", this.output);
   }
   clear() {
     this.output = "0";
-    this.$emit("update:value", this.output);
+  }
+  get nupdateAmount() {
+    this.$emit("update:amount", this.output);
+    return this.output;
   }
   add() {
-    console.log(this.output);
     const index = this.output.indexOf("+");
     if (index >= 0) {
       const array = this.output.split("+");
-      console.log(array);
       this.output = (parseFloat(array[0]) + parseFloat(array[1])).toString();
-      console.log(this.output);
-      this.$emit("update:value", this.output);
     }
     this.output = parseFloat(this.output).toString() + "+";
-    this.$emit("update:value", this.output);
   }
   ok() {
     this.$emit("update:value", parseFloat(this.output));
