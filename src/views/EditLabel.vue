@@ -20,7 +20,7 @@
       </label>
       {{amount}}
       <Tags></Tags>
-      <NumberPad :show="show" :amount.sync="amount"></NumberPad>
+      <NumberPad :show="show" :amount.sync="amount" @update:notes="onUpdateNotes"></NumberPad>
     </main>
   </Layout>
 </template>
@@ -35,6 +35,10 @@ import NumberPad from "@/components/Money/NumberPad.vue";
 export default class EditLabel extends Vue {
   show = "hide";
   amount = "0";
+  notes = "";
+  onUpdateNotes(value: string) {
+    this.notes = value;
+  }
   showNumberPad() {
     this.show = "show";
   }

@@ -30,11 +30,11 @@ import { Component, Prop } from "vue-property-decorator";
 
 @Component
 export default class NumberPad extends Vue {
-  @Prop() readonly amount!: string;
   @Prop() readonly show!: string;
+  @Prop() readonly amount!: string;
   output = this.amount;
   onValueChange(value: string) {
-    this.$emit("update:value", value);
+    this.$emit("update:notes", value);
   }
   inputContent(event: MouseEvent) {
     const button = event.target as HTMLButtonElement; //断言写法1
@@ -48,6 +48,7 @@ export default class NumberPad extends Vue {
       } else {
         this.output += input;
       }
+      this.$emit("update:amount", this.output);
       return;
     }
     if (this.output.indexOf(".") >= 0 && input === ".") {
@@ -59,6 +60,7 @@ export default class NumberPad extends Vue {
       return;
     }
     this.output += input;
+    this.updateAmount;
   }
   remove() {
     if (this.output.length === 1) {
@@ -70,8 +72,10 @@ export default class NumberPad extends Vue {
   clear() {
     this.output = "0";
   }
-  get nupdateAmount() {
+  get updateAmount() {
+    console.log(this.output);
     this.$emit("update:amount", this.output);
+    console.log(this.output);
     return this.output;
   }
   add() {
