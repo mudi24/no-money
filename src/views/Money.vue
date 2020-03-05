@@ -1,17 +1,9 @@
 <template>
   <Layout class-prefix="layout">
     <NumberPad :value.sync="record.amount" @submit="saveRecord" />
-    <Tabs
-      :value.sync="record.type"
-      class-prefix="type"
-      :data-source="recordTypeList"
-    />
+    <Tabs :value.sync="record.type" class-prefix="type" :data-source="recordTypeList" />
     <div class="notes">
-      <FormItem
-        field-name="备注"
-        placeholder="在这里输入备注"
-        :value.sync="record.notes"
-      />
+      <FormItem field-name="备注" placeholder="在这里输入备注" :value.sync="record.notes" />
     </div>
     <Tags @update:value="onUpdateTags" />
     <van-button type="warning">默认按钮</van-button>
@@ -43,7 +35,8 @@ Vue.use(Button);
 })
 export default class Money extends Vue {
   record: RecordItem = {
-    tags: [],
+    // tags: [],
+    tag: { name: "", value: "" },
     notes: "",
     type: "-",
     amount: 0
@@ -56,12 +49,12 @@ export default class Money extends Vue {
     this.$store.commit("fetchRecords");
   }
   onUpdateTags(value: []) {
-    this.record.tags = value;
+    // this.record.tags = value;
   }
   saveRecord() {
-    if (!this.record.tags || this.record.tags.length === 0) {
-      return window.alert("请至少选择一个标签");
-    }
+    // if (!this.record.tags || this.record.tags.length === 0) {
+    //   return window.alert("请至少选择一个标签");
+    // }
     this.$store.commit("createRecord", this.record);
     if (this.$store.state.createRecordError === null) {
       window.alert("已保存");

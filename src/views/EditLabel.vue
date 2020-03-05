@@ -12,15 +12,19 @@
       <label class="amount">
         <span class="name">
           <span class="icon-wrapper">
-            <Icon name="food"></Icon>
+            <Icon :name="`${record.tag.name}`"></Icon>
           </span>
-          <span class="tagName">餐饮</span>
+          <span class="tagName">{{record.tag.value}}</span>
         </span>
-        <input type="text" :value="amount" @focus="showNumberPad" />
+        <input type="text" readonly :value="record.amount" @focus="showNumberPad" />
       </label>
-      {{amount}}
-      <Tags></Tags>
-      <NumberPad :show="show" :amount.sync="amount" @update:notes="onUpdateNotes"></NumberPad>
+      <Tags @update:selectedTag="onUpdateTag"></Tags>
+      <NumberPad
+        :show="show"
+        :amount.sync="record.amount"
+        :notes.sync="record.notes"
+        @submit="saveRecord"
+      ></NumberPad>
     </main>
   </Layout>
 </template>
@@ -34,13 +38,27 @@ import NumberPad from "@/components/Money/NumberPad.vue";
 @Component({ components: { Tags, NumberPad } })
 export default class EditLabel extends Vue {
   show = "hide";
-  amount = "0";
-  notes = "";
-  onUpdateNotes(value: string) {
-    this.notes = value;
+  record: RecordItem = {
+    tag: { name: "food", value: "餐饮" },
+    notes: "",
+    type: "-",
+    amount: 0
+  };
+  onUpdateTag(tag: Tag) {
+    this.record.tag = tag;
   }
+
   showNumberPad() {
     this.show = "show";
+  }
+  saveRecord() {
+    this.$store.commit("createRecord", this.record);
+    if (this.$store.state.createRecordError === null) {
+      window.alert("已保存");
+    }
+    this.record.amount = 0;
+    this.record.notes = "";
+    this.show = "hide";
   }
 }
 </script>
@@ -108,6 +126,7 @@ export default class EditLabel extends Vue {
     }
     > input {
       text-align: right;
+      margin-right: 16px;
       background: transparent;
       border: none;
     }

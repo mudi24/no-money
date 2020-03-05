@@ -5,7 +5,7 @@
         v-for="tag in tagList"
         :key="tag.value"
         @click="toggle(tag)"
-        :class="{selected:selectedTags.indexOf(tag)>=0}"
+        :class="{selected:selected(tag)}"
       >
         <span class="icon-wrapper">
           <Icon :name="`${tag.name}`"></Icon>
@@ -30,21 +30,25 @@ import { mixins } from "vue-class-component";
 
 @Component
 export default class Tags extends mixins(TagHelper) {
-  selectedTags: string[] = [];
+  selectedTag: Tag = { name: "food", value: "餐饮" };
   created() {
     this.$store.commit("fetchTags");
   }
   get tagList() {
     return this.$store.state.tagList;
   }
-  toggle(tag: string) {
-    const index = this.selectedTags.indexOf(tag);
-    if (index >= 0) {
-      this.selectedTags.splice(index, 1);
-    } else {
-      this.selectedTags.push(tag);
+  selected(tag: Tag) {
+    if (
+      this.selectedTag.name === tag.name &&
+      this.selectedTag.value === tag.value
+    ) {
+      return true;
     }
-    this.$emit("update:value", this.selectedTags);
+    return false;
+  }
+  toggle(tag: Tag) {
+    this.selectedTag = tag;
+    this.$emit("update:selectedTag", this.selectedTag);
   }
 }
 </script>

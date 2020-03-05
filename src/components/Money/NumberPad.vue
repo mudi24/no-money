@@ -2,7 +2,12 @@
   <div class="numberPad" :class="`${show}`">
     <label class="notes">
       <span class="name">备注：</span>
-      <input type="text" placeholder="点击输入备注" @input="onValueChange($event.target.value)" />
+      <input
+        type="text"
+        placeholder="点击输入备注"
+        :value="value"
+        @input="onValueChange($event.target.value)"
+      />
     </label>
     <div class="buttons">
       <button @click="inputContent">1</button>
@@ -32,8 +37,12 @@ import { Component, Prop } from "vue-property-decorator";
 export default class NumberPad extends Vue {
   @Prop() readonly show!: string;
   @Prop() readonly amount!: string;
-  output = this.amount;
+  @Prop() readonly notes!: string;
+  output = this.amount.toString();
+  value = this.notes;
   onValueChange(value: string) {
+    console.log(this.notes);
+
     this.$emit("update:notes", value);
   }
   inputContent(event: MouseEvent) {
@@ -73,9 +82,7 @@ export default class NumberPad extends Vue {
     this.output = "0";
   }
   get updateAmount() {
-    console.log(this.output);
     this.$emit("update:amount", this.output);
-    console.log(this.output);
     return this.output;
   }
   add() {
@@ -87,9 +94,7 @@ export default class NumberPad extends Vue {
     this.output = parseFloat(this.output).toString() + "+";
   }
   ok() {
-    this.$emit("update:value", parseFloat(this.output));
     this.$emit("submit", parseFloat(this.output));
-    this.output = "0";
   }
 }
 </script>
