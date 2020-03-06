@@ -32,28 +32,35 @@ import { expenseTags, incomeTags } from "@/constants/tagList";
 @Component
 export default class Tags extends mixins(TagHelper) {
   @Prop() type!: string;
-
-  selectedTag: Tag = { name: "food", value: "餐饮" };
+  @Prop() selectedTag!: Tag;
   expenseTags = expenseTags;
   incomeTags = incomeTags;
-  created() {
-    this.$store.commit("fetchTags");
+  get tag() {
+    return this.selectedTag;
   }
+  set tag(value) {
+    this.tag.name = value.name;
+    this.tag.value = value.value;
+  }
+
+  // created() {
+  //   this.$store.commit("fetchTags");
+  // }
+  // get tagList() {
+  //   return this.$store.state.tagList;
+  // }
   get tagList() {
-    return this.$store.state.tagList;
+    return this.type === "-" ? expenseTags : incomeTags;
   }
   selected(tag: Tag) {
-    if (
-      this.selectedTag.name === tag.name &&
-      this.selectedTag.value === tag.value
-    ) {
+    if (this.tag.name === tag.name && this.tag.value === tag.value) {
       return true;
     }
     return false;
   }
   toggle(tag: Tag) {
-    this.selectedTag = tag;
-    this.$emit("update:selectedTag", this.selectedTag);
+    this.tag = tag;
+    this.$emit("update:selectedTag", this.tag);
   }
 }
 </script>

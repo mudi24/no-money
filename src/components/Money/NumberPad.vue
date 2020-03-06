@@ -91,19 +91,20 @@ export default class NumberPad extends Vue {
     this.$emit("update:amount", this.output);
   }
   ok() {
-    let x = this.output.slice(-1);
-    if (x === "+" || x === ".") {
+    if (this.output === "0" || this.output === "0.0") {
+      this.$emit("update:hide");
+      return;
+    }
+    let last = this.output.slice(-1);
+    if (last === "+" || last === ".") {
       this.output = this.output.substring(0, this.output.length - 1);
     }
     if (this.output.indexOf("+") >= 0) {
       const array = this.output.split("+");
       this.output = (parseFloat(array[0]) + parseFloat(array[1])).toString();
     }
-    console.log(this.output);
     this.$emit("update:amount", parseFloat(this.output));
     this.$emit("submit", parseFloat(this.output));
-    console.log(parseFloat(this.output));
-
     this.output = "0";
   }
 }

@@ -17,18 +17,20 @@
       <label class="amount">
         <span class="name">
           <span class="icon-wrapper">
-            <Icon :name="`${record.tag.name}`"></Icon>
+            <Icon :name="`${selectedTag.name}`"></Icon>
           </span>
-          <span class="tagName">{{record.tag.value}}</span>
+          <span class="tagName">{{selectedTag.value}}</span>
         </span>
         <input type="text" readonly :value="record.amount" @focus="showNumberPad" />
       </label>
-      <Tags :type="record.type" @update:selectedTag="onUpdateTag"></Tags>
+      <Tags v-if="record.type==='-'" :type="record.type" :selectedTag.sync="selectedTag"></Tags>
+      <Tags v-else :type="record.type" :selectedTag.sync="selectedTag"></Tags>
       <NumberPad
         :show="show"
         :amount.sync="record.amount"
         :notes.sync="record.notes"
         @submit="saveRecord"
+        @update:hide="hideNumberPad "
       ></NumberPad>
     </main>
   </Layout>
@@ -40,6 +42,7 @@ import { Component } from "vue-property-decorator";
 import Tags from "@/components/Money/Tags.vue";
 import NumberPad from "@/components/Money/NumberPad.vue";
 import recordTypeList from "@/constants/recordTypeList";
+import { expenseTags, incomeTags } from "@/constants/tagList";
 
 @Component({ components: { Tags, NumberPad } })
 export default class EditLabel extends Vue {
@@ -50,6 +53,7 @@ export default class EditLabel extends Vue {
     type: "-",
     amount: 0
   };
+  selectedTag = { name: "food", value: "餐饮" };
   recordTypeList = recordTypeList;
   created() {
     this.$store.commit("fetchRecords");
@@ -61,12 +65,19 @@ export default class EditLabel extends Vue {
   }
   selectType(item: RecordTypeItem) {
     this.record.type = item.value;
+    this.selectedTag =
+      this.record.type === "-"
+        ? { name: "food", value: "餐饮" }
+        : { name: "pay", value: "工资" };
   }
   onUpdateTag(tag: Tag) {
     this.record.tag = tag;
   }
   showNumberPad() {
     this.show = "show";
+  }
+  hideNumberPad() {
+    this.show = "hide";
   }
   saveRecord() {
     this.$store.commit("createRecord", this.record);
@@ -75,7 +86,7 @@ export default class EditLabel extends Vue {
     }
     this.record.amount = 0;
     this.record.notes = "";
-    this.show = "hide";
+    this.hideNumberPad();
   }
 }
 </script>
