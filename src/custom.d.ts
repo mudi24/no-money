@@ -1,3 +1,7 @@
+type RecordTypeItem = {
+  text: string;
+  value: string;
+};
 type RecordItem = {
   tag: Tag;
   notes: string;

@@ -41,8 +41,6 @@ export default class NumberPad extends Vue {
   output = this.amount.toString();
   value = this.notes;
   onValueChange(value: string) {
-    console.log(this.notes);
-
     this.$emit("update:notes", value);
   }
   inputContent(event: MouseEvent) {
@@ -66,10 +64,11 @@ export default class NumberPad extends Vue {
           this.output += input;
         }
       }
+      this.$emit("update:amount", this.output);
       return;
     }
     this.output += input;
-    this.updateAmount;
+    this.$emit("update:amount", this.output);
   }
   remove() {
     if (this.output.length === 1) {
@@ -77,24 +76,35 @@ export default class NumberPad extends Vue {
     } else {
       this.output = this.output.slice(0, -1);
     }
+    this.$emit("update:amount", this.output);
   }
   clear() {
     this.output = "0";
-  }
-  get updateAmount() {
     this.$emit("update:amount", this.output);
-    return this.output;
   }
   add() {
-    const index = this.output.indexOf("+");
-    if (index >= 0) {
+    if (this.output.indexOf("+") >= 0) {
       const array = this.output.split("+");
       this.output = (parseFloat(array[0]) + parseFloat(array[1])).toString();
     }
     this.output = parseFloat(this.output).toString() + "+";
+    this.$emit("update:amount", this.output);
   }
   ok() {
+    let x = this.output.slice(-1);
+    if (x === "+" || x === ".") {
+      this.output = this.output.substring(0, this.output.length - 1);
+    }
+    if (this.output.indexOf("+") >= 0) {
+      const array = this.output.split("+");
+      this.output = (parseFloat(array[0]) + parseFloat(array[1])).toString();
+    }
+    console.log(this.output);
+    this.$emit("update:amount", parseFloat(this.output));
     this.$emit("submit", parseFloat(this.output));
+    console.log(parseFloat(this.output));
+
+    this.output = "0";
   }
 }
 </script>
@@ -108,13 +118,13 @@ export default class NumberPad extends Vue {
   width: 100%;
   position: absolute;
   left: 0;
-  bottom: -50%;
+  bottom: -40vh;
   transition: all 0.3s;
   &.show {
     bottom: 60px;
   }
   .notes {
-    padding: 8px;
+    height: 8vh;
     font-size: 16px;
     display: flex;
     align-items: center;
@@ -142,12 +152,12 @@ export default class NumberPad extends Vue {
     @extend %clearFix;
     > button {
       width: 25%;
-      height: 64px;
+      height: 8vh;
       float: left;
       background: transparent;
       border: 1px solid #8d8ea6;
       &.ok {
-        height: 64 * 2px;
+        height: 16vh;
         background: #25c489;
         float: right;
       }

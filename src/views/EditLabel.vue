@@ -2,10 +2,15 @@
   <Layout class-prefix="editLabel">
     <header class="header">
       <button>取消</button>
-      <span class="toggleContent">
-        <button class="toggle expense selected">支出</button>
-        <button class="toggle income">收入</button>
-      </span>
+      <ul class="tabs">
+        <li
+          class="tabs-item"
+          v-for="item in recordTypeList"
+          :key="item.value"
+          :class="liClass(item)"
+          @click="selectType(item)"
+        >{{item.text}}</li>
+      </ul>
       <button>保存</button>
     </header>
     <main class="content">
@@ -18,7 +23,7 @@
         </span>
         <input type="text" readonly :value="record.amount" @focus="showNumberPad" />
       </label>
-      <Tags @update:selectedTag="onUpdateTag"></Tags>
+      <Tags :type="record.type" @update:selectedTag="onUpdateTag"></Tags>
       <NumberPad
         :show="show"
         :amount.sync="record.amount"
@@ -34,6 +39,7 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import Tags from "@/components/Money/Tags.vue";
 import NumberPad from "@/components/Money/NumberPad.vue";
+import recordTypeList from "@/constants/recordTypeList";
 
 @Component({ components: { Tags, NumberPad } })
 export default class EditLabel extends Vue {
@@ -44,10 +50,21 @@ export default class EditLabel extends Vue {
     type: "-",
     amount: 0
   };
+  recordTypeList = recordTypeList;
+  created() {
+    this.$store.commit("fetchRecords");
+  }
+  liClass(item: RecordTypeItem) {
+    return {
+      selected: item.value === this.record.type
+    };
+  }
+  selectType(item: RecordTypeItem) {
+    this.record.type = item.value;
+  }
   onUpdateTag(tag: Tag) {
     this.record.tag = tag;
   }
-
   showNumberPad() {
     this.show = "show";
   }
@@ -73,24 +90,28 @@ export default class EditLabel extends Vue {
   background: #403f67;
   padding: 16px;
   font-size: 14px;
+  color: white;
   button {
     border: none;
-    color: white;
     background: inherit;
   }
-  .income {
-    padding: 3px 16px;
-    border: 1px solid white;
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
+  .tabs {
+    display: flex;
+
+    li {
+      padding: 3px 16px;
+      border: 1px solid white;
+      &:first-child {
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+      }
+      &:last-child {
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+      }
+    }
   }
-  .expense {
-    padding: 3px 16px;
-    border: 1px solid white;
-    border-top-left-radius: 8px;
-    border-bottom-left-radius: 8px;
-  }
-  .toggle.selected {
+  .tabs-item.selected {
     color: black;
     background: #fefefe;
   }

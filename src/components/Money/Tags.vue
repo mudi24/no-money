@@ -24,13 +24,18 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { Component, Prop } from "vue-property-decorator";
 import TagHelper from "@/mixins/TagHelper";
 import { mixins } from "vue-class-component";
+import { expenseTags, incomeTags } from "@/constants/tagList";
 
 @Component
 export default class Tags extends mixins(TagHelper) {
+  @Prop() type!: string;
+
   selectedTag: Tag = { name: "food", value: "餐饮" };
+  expenseTags = expenseTags;
+  incomeTags = incomeTags;
   created() {
     this.$store.commit("fetchTags");
   }
