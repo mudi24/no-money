@@ -36,10 +36,13 @@ export default {
 
 <style lang='scss' scoped>
 .header {
+  position: absolute;
+  width: 100%;
   display: flex;
   flex-wrap: nowrap;
   background: #403f67;
   color: white;
+  height: 12vh;
   > .item {
     margin: 8px;
     display: flex;

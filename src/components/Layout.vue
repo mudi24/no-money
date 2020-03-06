@@ -23,10 +23,12 @@ export default {
   .content {
     overflow: auto;
     flex-grow: 1;
+    margin-bottom: 8vh;
   }
   .nav {
     position: absolute;
     width: 100%;
+    height: 8vh;
     bottom: 0;
     left: 0;
   }

@@ -17,14 +17,14 @@
       <label class="amount">
         <span class="name">
           <span class="icon-wrapper">
-            <Icon :name="`${selectedTag.name}`"></Icon>
+            <Icon :name="record.tag.name"></Icon>
           </span>
-          <span class="tagName">{{selectedTag.value}}</span>
+          <span class="tagName">{{record.tag.value}}</span>
         </span>
         <input type="text" readonly :value="record.amount" @focus="showNumberPad" />
       </label>
-      <Tags v-if="record.type==='-'" :type="record.type" :selectedTag.sync="selectedTag"></Tags>
-      <Tags v-else :type="record.type" :selectedTag.sync="selectedTag"></Tags>
+      <Tags v-if="record.type==='-'" :type="record.type" @update:selectedTag="onUpdateTag"></Tags>
+      <Tags v-else :type="record.type" @update:selectedTag="onUpdateTag"></Tags>
       <NumberPad
         :show="show"
         :amount.sync="record.amount"

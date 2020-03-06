@@ -17,4 +17,14 @@ body {
   background: #f5f5f5;
   // background: #f0f3f6;
 }
+// Vant UI样式
+.van-dropdown-menu__item {
+  > .van-dropdown-menu__title {
+    font-size: 18px;
+    color: white;
+    > &::after {
+      border-color: transparent transparent white white;
+    }
+  }
+}
 </style>

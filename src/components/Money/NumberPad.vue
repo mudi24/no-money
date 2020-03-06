@@ -122,7 +122,7 @@ export default class NumberPad extends Vue {
   bottom: -40vh;
   transition: all 0.3s;
   &.show {
-    bottom: 60px;
+    bottom: 8vh;
   }
   .notes {
     height: 8vh;

@@ -1,39 +1,141 @@
 <template>
   <Layout class-prefix="home">
     <HomeHeader></HomeHeader>
-    <div>
-      <div>
-        <span>10月20日 周日</span>
-        <span>支出：36.00</span>
-        <span>收入：3.00</span>
-      </div>
-      <ol>
-        <li>餐饮</li>
-        <li>理财</li>
-        <li>交通</li>
-      </ol>
-    </div>
+    <ol v-if="groupedList.length>0" class="statistics">
+      <li v-for="(group, index) in groupedList" :key="index">
+        <h3 class="title">
+          {{ beautify(group.title) }}
+          <span>￥{{group.total}}</span>
+        </h3>
+        <ol>
+          <li class="record" v-for="item in group.items" :key="item.id">
+            <span class="statistics-tags">
+              <Icon :name="item.tag.name"></Icon>
+            </span>
+            <span class="statistics-tags">{{ item.tag.value }}</span>
+            <span class="statistics-notes">{{ item.notes }}</span>
+            <span>{{item.type}}{{ item.amount }}</span>
+          </li>
+        </ol>
+      </li>
+    </ol>
+    <div v-else class="noResult">目前没有相关记录</div>
   </Layout>
 </template>
 
-<style lang="scss" >
-.van-dropdown-menu__item {
-  > .van-dropdown-menu__title {
-    font-size: 18px;
-    color: white;
-    > &::after {
-      border-color: transparent transparent white white;
+<script lang='ts'>
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import recordTypeList from "@/constants/recordTypeList";
+import HomeHeader from "@/components/HomeHeader.vue";
+import clone from "@/lib/clone";
+import dayjs from "dayjs";
+
+@Component({
+  components: { HomeHeader }
+})
+export default class Home extends Vue {
+  interval = "day";
+  recordTypeList = recordTypeList;
+
+  beautify(string: string) {
+    const day = dayjs(string);
+    const now = dayjs();
+    if (dayjs(string).isSame(new Date(), "day")) {
+      return "今天";
+    } else if (day.isSame(now.subtract(1, "day"), "day")) {
+      return "昨天";
+    } else if (day.isSame(now.subtract(2, "day"), "day")) {
+      return "前天";
+    } else if (day.isSame(now, "year")) {
+      return day.format("MM月D日");
+    } else {
+      return day.format("YYYY年MM月D日");
     }
   }
+  get recordList() {
+    return (this.$store.state as RootState).recordList;
+  }
+  get groupedList() {
+    const { recordList } = this;
+    if (recordList.length === 0) {
+      return [];
+    }
+    const newList = clone(recordList).sort(
+      (a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf()
+    );
+    if (newList.length === 0) {
+      return [];
+    }
+    type Result = {
+      title: string;
+      total?: number;
+      items: RecordItem[];
+    }[];
+    const result: Result = [
+      {
+        title: dayjs(newList[0].createdAt).format("YYYY-MM-DD"),
+        items: [newList[0]]
+      }
+    ];
+    for (let i = 1; i < newList.length; i++) {
+      const current = newList[i];
+      const last = result[result.length - 1];
+
+      if (dayjs(last.title).isSame(dayjs(current.createdAt), "day")) {
+        last.items.push(current);
+      } else {
+        result.push({
+          title: dayjs(current.createdAt).format("YYYY-MM-DD"),
+          items: [current]
+        });
+      }
+    }
+
+    result.map(group => {
+      group.total = group.items.reduce((sum, item) => {
+        return item.type === "+" ? sum + item.amount : sum - item.amount;
+      }, 0);
+    });
+    return result;
+  }
+  created() {
+    this.$store.commit("fetchRecords");
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.home-content {
+}
+%item {
+  padding: 0 16px;
+  min-height: 40px;
+  // padding: 8px 16px;
+  // line-height: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.statistics {
+  margin-top: 12vh;
+}
+.title {
+  @extend %item;
+}
+.record {
+  background: white;
+  @extend %item;
+}
+.statistics-tags {
+  white-space: nowrap;
+}
+.statistics-notes {
+  margin-right: auto;
+  margin-left: 16px;
+  color: #999;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: wrap;
 }
 </style>
-
-<script lang='js'>
-import HomeHeader from '@/components/HomeHeader'
-
-export default {
-  name: "home",
-  components:{HomeHeader},
-  
-};
-</script>

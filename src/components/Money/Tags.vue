@@ -8,7 +8,7 @@
         :class="{selected:selected(tag)}"
       >
         <span class="icon-wrapper">
-          <Icon :name="`${tag.name}`"></Icon>
+          <Icon :name="tag.name"></Icon>
         </span>
         <span class="tagName">{{tag.value}}</span>
       </li>
@@ -35,20 +35,8 @@ export default class Tags extends mixins(TagHelper) {
   @Prop() selectedTag!: Tag;
   expenseTags = expenseTags;
   incomeTags = incomeTags;
-  get tag() {
-    return this.selectedTag;
-  }
-  set tag(value) {
-    this.tag.name = value.name;
-    this.tag.value = value.value;
-  }
+  tag = { name: "food", value: "餐饮" };
 
-  // created() {
-  //   this.$store.commit("fetchTags");
-  // }
-  // get tagList() {
-  //   return this.$store.state.tagList;
-  // }
   get tagList() {
     return this.type === "-" ? expenseTags : incomeTags;
   }
