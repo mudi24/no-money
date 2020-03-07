@@ -1,6 +1,6 @@
 <template>
   <Layout class-prefix="home">
-    <HomeHeader></HomeHeader>
+    <HomeHeader :month="getRecentMonth()" :total="getMonthTotal()"></HomeHeader>
     <ol v-if="groupedList.length>0" class="statistics">
       <li v-for="(group, index) in groupedList" :key="index">
         <h3 class="title">
@@ -70,20 +70,34 @@ export default class Home extends Vue {
     );
   }
   getDayTotal(group: ResultItem, type: string) {
-    if (type === "-") {
-      return group.items
-        .filter(item => item.type === "-")
-        .reduce((sum, item) => {
-          return sum - item.amount;
-        }, 0);
-    } else if (type === "+") {
-      return group.items
-        .filter(item => item.type === "+")
-        .reduce((sum, item) => {
-          return sum + item.amount;
-        }, 0);
-    }
+    return group.items
+      .filter(item => item.type === type)
+      .reduce((sum, item) => {
+        return sum + item.amount;
+      }, 0);
   }
+
+  getRecentMonth() {
+    let recentMonth: Month[] = [];
+    if (this.recordList.length === 0) {
+      recentMonth.push({
+        text: dayjs().format("M") + "月",
+        value: dayjs().format("M")
+      });
+    } else {
+      let monthList = [
+        ...new Set(
+          this.createList().map(item => dayjs(item.createdAt).format("M"))
+        )
+      ]; // 或者 return Array.from(new Set(array))
+      monthList = monthList.length >= 3 ? monthList.splice(3) : monthList;
+      monthList.map(item => {
+        recentMonth.push({ text: item + "月", value: item });
+      });
+    }
+    return recentMonth;
+  }
+
   get groupedList() {
     const { recordList } = this;
     if (recordList.length === 0) {
@@ -98,6 +112,8 @@ export default class Home extends Vue {
     const result: Result = [
       {
         title: dayjs(newList[0].createdAt).format("YYYY-MM-DD"),
+        totalExponse: 0,
+        totalIncome: 0,
         items: [newList[0]]
       }
     ];
@@ -110,6 +126,8 @@ export default class Home extends Vue {
       } else {
         result.push({
           title: dayjs(current.createdAt).format("YYYY-MM-DD"),
+          totalExponse: 0,
+          totalIncome: 0,
           items: [current]
         });
       }
@@ -121,6 +139,26 @@ export default class Home extends Vue {
     });
 
     return result;
+  }
+  getMonthTotal() {
+    let total = { exponse: 0, income: 0 };
+    if (this.groupedList !== []) {
+      const exponseList = this.groupedList.map(group => group.totalExponse);
+      const incomeList = this.groupedList.map(group => group.totalIncome);
+      if (exponseList.length !== 0) {
+        total.exponse = exponseList.reduce((sum, item) => {
+          return (sum as number) + (item as number);
+        }, 0) as number;
+      }
+      if (incomeList.length !== 0) {
+        total.income = incomeList.reduce((sum, item) => {
+          return (sum as number) + (item as number);
+        }, 0) as number;
+      }
+      return total;
+    } else {
+      return total;
+    }
   }
 }
 </script>

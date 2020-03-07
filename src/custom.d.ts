@@ -2,6 +2,10 @@ type RecordTypeItem = {
   text: string;
   value: string;
 };
+type Month = {
+  text: string;
+  value: string;
+};
 type RecordItem = {
   tag: Tag;
   notes: string;

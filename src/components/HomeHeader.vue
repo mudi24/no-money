@@ -8,30 +8,29 @@
     </div>
     <div class="item income">
       <span class="title">收入</span>
-      <span class="content">￥689.00</span>
+      <span class="content">￥{{total.income}}</span>
     </div>
     <div class="item expense">
       <span class="title">支出</span>
-      <span class="content">￥629.00</span>
+      <span class="content">￥{{total.exponse}}</span>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  components: {},
-  data() {
-    return {
-      value1: 0,
-      option1: [
-        { text: "10月", value: 0 },
-        { text: "10月", value: 1 },
-        { text: "10月", value: 2 }
-      ]
-    };
-  },
-  methods: {}
-};
+<script lang='ts'>
+import Vue from "vue";
+import { Component, Prop } from "vue-property-decorator";
+
+@Component
+export default class HomeHeader extends Vue {
+  @Prop() readonly total!: {
+    exponse: number;
+    income: number;
+  };
+  @Prop() readonly month!: Month[];
+  value1 = this.month[0].value;
+  option1 = this.month;
+}
 </script>
 
 <style lang='scss' scoped>
