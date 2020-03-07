@@ -5,7 +5,8 @@
       <li v-for="(group, index) in groupedList" :key="index">
         <h3 class="title">
           {{ beautify(group.title) }}
-          <span>￥{{group.total}}</span>
+          <span>支出：￥{{group.totalExponse}}</span>
+          <span>收入：￥{{group.totalIncome}}</span>
         </h3>
         <ol>
           <li class="record" v-for="item in group.items" :key="item.id">
@@ -26,18 +27,25 @@
 <script lang='ts'>
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import recordTypeList from "@/constants/recordTypeList";
 import HomeHeader from "@/components/HomeHeader.vue";
 import clone from "@/lib/clone";
 import dayjs from "dayjs";
+
+type ResultItem = {
+  title: string;
+  totalExponse?: number;
+  totalIncome?: number;
+  items: RecordItem[];
+};
+type Result = ResultItem[];
 
 @Component({
   components: { HomeHeader }
 })
 export default class Home extends Vue {
-  interval = "day";
-  recordTypeList = recordTypeList;
-
+  created() {
+    this.$store.commit("fetchRecords");
+  }
   beautify(string: string) {
     const day = dayjs(string);
     const now = dayjs();
@@ -56,22 +64,37 @@ export default class Home extends Vue {
   get recordList() {
     return (this.$store.state as RootState).recordList;
   }
+  createList() {
+    return clone(this.recordList).sort(
+      (a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf()
+    );
+  }
+  getDayTotal(group: ResultItem, type: string) {
+    if (type === "-") {
+      return group.items
+        .filter(item => item.type === "-")
+        .reduce((sum, item) => {
+          return sum - item.amount;
+        }, 0);
+    } else if (type === "+") {
+      return group.items
+        .filter(item => item.type === "+")
+        .reduce((sum, item) => {
+          return sum + item.amount;
+        }, 0);
+    }
+  }
   get groupedList() {
     const { recordList } = this;
     if (recordList.length === 0) {
       return [];
     }
-    const newList = clone(recordList).sort(
-      (a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf()
-    );
+
+    const newList = this.createList();
     if (newList.length === 0) {
       return [];
     }
-    type Result = {
-      title: string;
-      total?: number;
-      items: RecordItem[];
-    }[];
+
     const result: Result = [
       {
         title: dayjs(newList[0].createdAt).format("YYYY-MM-DD"),
@@ -92,22 +115,17 @@ export default class Home extends Vue {
       }
     }
 
-    result.map(group => {
-      group.total = group.items.reduce((sum, item) => {
-        return item.type === "+" ? sum + item.amount : sum - item.amount;
-      }, 0);
+    result.forEach(group => {
+      group.totalExponse = this.getDayTotal(group, "-");
+      group.totalIncome = this.getDayTotal(group, "+");
     });
+
     return result;
-  }
-  created() {
-    this.$store.commit("fetchRecords");
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.home-content {
-}
 %item {
   padding: 0 16px;
   min-height: 40px;
