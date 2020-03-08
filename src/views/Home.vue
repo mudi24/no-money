@@ -1,6 +1,10 @@
 <template>
   <Layout class-prefix="home">
-    <HomeHeader :month="getRecentMonth()" :total="getMonthTotal()"></HomeHeader>
+    <HomeHeader
+      :month="getRecentMonth()"
+      :total="getMonthTotal()"
+      @update:month="changeMonth($event)"
+    ></HomeHeader>
     <ol v-if="groupedList.length>0" class="statistics">
       <li v-for="(group, index) in groupedList" :key="index">
         <h3 class="title">
@@ -43,8 +47,11 @@ type Result = ResultItem[];
   components: { HomeHeader }
 })
 export default class Home extends Vue {
+  currentRecordList: RecordItem[] = [];
   created() {
     this.$store.commit("fetchRecords");
+    const currentMonth = this.getRecentMonth()[0].value; // 初始化记录列表（重要）
+    this.changeMonth(currentMonth);
   }
   beautify(string: string) {
     const day = dayjs(string);
@@ -67,6 +74,11 @@ export default class Home extends Vue {
   createList() {
     return clone(this.recordList).sort(
       (a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf()
+    );
+  }
+  changeMonth(selectedMonth: string) {
+    this.currentRecordList = this.createList().filter(
+      item => dayjs(item.createdAt).format("M") === selectedMonth
     );
   }
   getDayTotal(group: ResultItem, type: string) {
@@ -100,25 +112,25 @@ export default class Home extends Vue {
 
   get groupedList() {
     const { recordList } = this;
+    const { currentRecordList } = this;
     if (recordList.length === 0) {
       return [];
     }
 
-    const newList = this.createList();
-    if (newList.length === 0) {
+    if (currentRecordList.length === 0) {
       return [];
     }
 
     const result: Result = [
       {
-        title: dayjs(newList[0].createdAt).format("YYYY-MM-DD"),
+        title: dayjs(currentRecordList[0].createdAt).format("YYYY-MM-DD"),
         totalExponse: 0,
         totalIncome: 0,
-        items: [newList[0]]
+        items: [currentRecordList[0]]
       }
     ];
-    for (let i = 1; i < newList.length; i++) {
-      const current = newList[i];
+    for (let i = 1; i < currentRecordList.length; i++) {
+      const current = currentRecordList[i];
       const last = result[result.length - 1];
 
       if (dayjs(last.title).isSame(dayjs(current.createdAt), "day")) {

@@ -1,9 +1,9 @@
 <template>
   <div class="header">
     <div class="time">
-      <span class="title">2019</span>
+      <span class="title">2020</span>
       <van-dropdown-menu>
-        <van-dropdown-item v-model="value1" :options="option1" />
+        <van-dropdown-item v-model="value1" :options="option1" @change="change" />
       </van-dropdown-menu>
     </div>
     <div class="item income">
@@ -29,7 +29,14 @@ export default class HomeHeader extends Vue {
   };
   @Prop() readonly month!: Month[];
   value1 = this.month[0].value;
-  option1 = this.month;
+  // option1 = this.month;
+  option1 = [
+    { text: "3月", value: "3" },
+    { text: "2月", value: "2" }
+  ];
+  change() {
+    this.$emit("update:month", this.value1);
+  }
 }
 </script>
 
