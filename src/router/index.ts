@@ -1,9 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Money from '@/views/Money.vue';
 import Home from '@/views/Home.vue';
-import Labels from '@/views/Labels.vue';
-import Statistics from '@/views/Statistics.vue';
+import Chart from '@/views/Chart.vue';
 import Notfound from '@/views/Notfound.vue';
 import EditLabel from '@/views/EditLabel.vue';
 import DiscoverMore from '@/views/DiscoverMore.vue';
@@ -21,13 +19,10 @@ const routes = [
     component: Home,
   },
   {
-    path: '/labels',
-    component: Labels,
+    path: '/chart',
+    component: Chart,
   },
   {
-    path: '/statistics',
-    component: Statistics
-  }, {
     path: '/editLabel',
     component: EditLabel
   }, {
