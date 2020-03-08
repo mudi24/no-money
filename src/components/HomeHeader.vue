@@ -8,11 +8,11 @@
     </div>
     <div class="item income">
       <span class="title">收入</span>
-      <span class="content">￥{{total.income}}</span>
+      <span class="content">￥{{beautifyAccount(total.income)}}</span>
     </div>
     <div class="item expense">
       <span class="title">支出</span>
-      <span class="content">￥{{total.exponse}}</span>
+      <span class="content">￥{{beautifyAccount(total.exponse)}}</span>
     </div>
   </div>
 </template>
@@ -20,9 +20,11 @@
 <script lang='ts'>
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
+import { mixins } from "vue-class-component";
+import BeautifyAccount from "@/mixins/BeautifyAccount";
 
 @Component
-export default class HomeHeader extends Vue {
+export default class HomeHeader extends mixins(BeautifyAccount) {
   @Prop() readonly total!: {
     exponse: number;
     income: number;

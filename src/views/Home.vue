@@ -5,26 +5,28 @@
       :total="getMonthTotal()"
       @update:month="changeMonth($event)"
     ></HomeHeader>
-    <ol v-if="groupedList.length>0" class="statistics">
-      <li v-for="(group, index) in groupedList" :key="index">
-        <h3 class="title">
-          {{ beautify(group.title) }}
-          <span>支出：￥{{group.totalExponse}}</span>
-          <span>收入：￥{{group.totalIncome}}</span>
-        </h3>
-        <ol>
-          <li class="record" v-for="item in group.items" :key="item.id">
-            <span class="statistics-tags">
-              <Icon :name="item.tag.name"></Icon>
-            </span>
-            <span class="statistics-tags">{{ item.tag.value }}</span>
-            <span class="statistics-notes">{{ item.notes }}</span>
-            <span>{{item.type}}{{ item.amount }}</span>
-          </li>
-        </ol>
-      </li>
-    </ol>
-    <div v-else class="noResult">目前没有相关记录</div>
+    <div class="statistics">
+      <ol v-if="groupedList.length>0">
+        <li v-for="(group, index) in groupedList" :key="index">
+          <h3 class="title">
+            {{ beautify(group.title) }}
+            <span>支出：{{beautifyAccount(group.totalExponse)}}</span>
+            <span>收入：{{beautifyAccount(group.totalIncome)}}</span>
+          </h3>
+          <ol>
+            <li class="record" v-for="item in group.items" :key="item.id">
+              <span class="statistics-tags">
+                <Icon :name="item.tag.name"></Icon>
+              </span>
+              <span class="statistics-tags">{{ item.tag.value }}</span>
+              <span class="statistics-notes">{{ item.notes }}</span>
+              <span>{{item.type}}{{ beautifyAccount(item.amount) }}</span>
+            </li>
+          </ol>
+        </li>
+      </ol>
+      <div v-else class="noResult">目前没有相关记录</div>
+    </div>
   </Layout>
 </template>
 
@@ -34,6 +36,8 @@ import { Component } from "vue-property-decorator";
 import HomeHeader from "@/components/HomeHeader.vue";
 import clone from "@/lib/clone";
 import dayjs from "dayjs";
+import { mixins } from "vue-class-component";
+import BeautifyAccount from "@/mixins/BeautifyAccount";
 
 type ResultItem = {
   title: string;
@@ -46,7 +50,7 @@ type Result = ResultItem[];
 @Component({
   components: { HomeHeader }
 })
-export default class Home extends Vue {
+export default class Home extends mixins(BeautifyAccount) {
   currentRecordList: RecordItem[] = [];
   created() {
     this.$store.commit("fetchRecords");
@@ -176,6 +180,9 @@ export default class Home extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.statistics {
+  margin-top: 12vh;
+}
 %item {
   padding: 0 16px;
   min-height: 40px;
@@ -185,9 +192,7 @@ export default class Home extends Vue {
   justify-content: space-between;
   align-items: center;
 }
-.statistics {
-  margin-top: 12vh;
-}
+
 .title {
   @extend %item;
 }
