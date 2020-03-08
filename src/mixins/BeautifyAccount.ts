@@ -7,7 +7,6 @@ import Component from 'vue-class-component'
 class BeautifyAccount extends Vue {
   beautifyAccount(account: number | string) {
     if (typeof account === 'number') {
-      console.log('数字');
       account = account.toString()
     }
     const decimalPlaces = account.indexOf('.') >= 0 ? account.split(".")[1].length : 0

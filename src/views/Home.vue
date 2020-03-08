@@ -8,19 +8,25 @@
     <div class="statistics">
       <ol v-if="groupedList.length>0">
         <li v-for="(group, index) in groupedList" :key="index">
-          <h3 class="title">
+          <div class="title">
             {{ beautify(group.title) }}
-            <span>支出：{{beautifyAccount(group.totalExponse)}}</span>
-            <span>收入：{{beautifyAccount(group.totalIncome)}}</span>
-          </h3>
+            <div class="total">
+              <span>支出：{{beautifyAccount(group.totalExponse)}}</span>
+              <span class="totalIncome">收入：{{beautifyAccount(group.totalIncome)}}</span>
+            </div>
+          </div>
           <ol>
             <li class="record" v-for="item in group.items" :key="item.id">
-              <span class="statistics-tags">
-                <Icon :name="item.tag.name"></Icon>
-              </span>
-              <span class="statistics-tags">{{ item.tag.value }}</span>
-              <span class="statistics-notes">{{ item.notes }}</span>
-              <span>{{item.type}}{{ beautifyAccount(item.amount) }}</span>
+              <div class="statistics-left">
+                <span class="tag-wrapper">
+                  <Icon :name="item.tag.name"></Icon>
+                </span>
+                <span class="statistics-info">
+                  <span class="statistics-tags-name">{{ item.tag.value }}</span>
+                  <span class="statistics-notes">{{ item.notes }}</span>
+                </span>
+              </div>
+              <span class="statistics-account">{{item.type}}{{ beautifyAccount(item.amount) }}</span>
             </li>
           </ol>
         </li>
@@ -182,33 +188,62 @@ export default class Home extends mixins(BeautifyAccount) {
 <style lang="scss" scoped>
 .statistics {
   margin-top: 12vh;
+  background: #ffffff;
 }
+.title {
+  padding: 4px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: gray;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .totalIncome {
+    margin-left: 2em;
+  }
+}
+
 %item {
-  padding: 0 16px;
-  min-height: 40px;
-  // padding: 8px 16px;
-  // line-height: 24px;
+  padding: 12px 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.title {
-  @extend %item;
-}
 .record {
-  background: white;
   @extend %item;
-}
-.statistics-tags {
-  white-space: nowrap;
-}
-.statistics-notes {
-  margin-right: auto;
-  margin-left: 16px;
-  color: #999;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: wrap;
+  .statistics-left {
+    display: flex;
+    .tag-wrapper {
+      width: 40px;
+      height: 40px;
+      background: #f4f5ff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      > .icon {
+        width: 32px;
+        height: 32px;
+        color: gray;
+      }
+    }
+    .statistics-info {
+      display: flex;
+      flex-direction: column;
+      margin-left: 8px;
+      .statistics-notes {
+        font-size: 12px;
+        color: #999;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: wrap;
+      }
+    }
+  }
+  .statistics-account {
+    font-size: 18px;
+    font-weight: 600;
+  }
 }
 </style>
