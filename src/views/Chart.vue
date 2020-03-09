@@ -24,15 +24,26 @@
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import { mixins } from "vue-class-component";
+import dayjs from "dayjs";
 import ChartHeader from "@/components/ChartHeader.vue";
+import FilterRecordList from "@/mixins/FilterRecordList";
 
 @Component({
   components: {
     ChartHeader
   }
 })
-export default class Chart extends Vue {
+export default class Chart extends mixins(FilterRecordList) {
   tabsInfo = ["周", "月", "年"];
+  currentMonth = "";
+  created() {
+    this.$store.commit("fetchRecords");
+    const currentMonth = this.getCurrentMonthOrYear("月");
+    const x = this.changeMonth(currentMonth);
+  }
+  get recordList() {
+    return (this.$store.state as RootState).recordList;
+  }
 }
 </script>
 

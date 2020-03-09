@@ -22,6 +22,12 @@ class FilterRecordList extends Vue {
       item => dayjs(item.createdAt).format("M") === selectedMonth
     );
   }
+  getCurrentMonthOrYear(newRecordTime: string) {
+    const { recordList } = this;
+    newRecordTime = newRecordTime === '月' ? 'M' : 'YYYY'
+    return dayjs(recordList[recordList.length - 1].createdAt).format(newRecordTime);
+  }
+
 }
 
 export default FilterRecordList
