@@ -3,7 +3,7 @@
     <HomeHeader
       :month="getRecentMonth()"
       :total="getMonthTotal()"
-      @update:month="changeMonth($event)"
+      @update:month="changeCurrentList($event)"
     ></HomeHeader>
     <div class="statistics">
       <ol v-if="groupedList.length>0">
@@ -44,6 +44,8 @@ import clone from "@/lib/clone";
 import dayjs from "dayjs";
 import { mixins } from "vue-class-component";
 import BeautifyAccount from "@/mixins/BeautifyAccount";
+import FilterRecordList from "@/mixins/FilterRecordList";
+import { Tag } from "vant";
 
 type ResultItem = {
   title: string;
@@ -56,12 +58,15 @@ type Result = ResultItem[];
 @Component({
   components: { HomeHeader }
 })
-export default class Home extends mixins(BeautifyAccount) {
+export default class Home extends mixins(BeautifyAccount, FilterRecordList) {
   currentRecordList: RecordItem[] = [];
   created() {
     this.$store.commit("fetchRecords");
     const currentMonth = this.getRecentMonth()[0].value; // 初始化记录列表（重要）
-    this.changeMonth(currentMonth);
+    this.changeCurrentList(currentMonth);
+  }
+  changeCurrentList(selectedMonth: string) {
+    this.currentRecordList = this.changeMonth(selectedMonth);
   }
   beautify(string: string) {
     const day = dayjs(string);
@@ -73,23 +78,13 @@ export default class Home extends mixins(BeautifyAccount) {
     } else if (day.isSame(now.subtract(2, "day"), "day")) {
       return "前天";
     } else if (day.isSame(now, "year")) {
-      return day.format("MM月D日");
+      return day.format("MM月DD日");
     } else {
-      return day.format("YYYY年MM月D日");
+      return day.format("YYYY年MM月DD日");
     }
   }
   get recordList() {
     return (this.$store.state as RootState).recordList;
-  }
-  createList() {
-    return clone(this.recordList).sort(
-      (a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf()
-    );
-  }
-  changeMonth(selectedMonth: string) {
-    this.currentRecordList = this.createList().filter(
-      item => dayjs(item.createdAt).format("M") === selectedMonth
-    );
   }
   getDayTotal(group: ResultItem, type: string) {
     return group.items
