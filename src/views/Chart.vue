@@ -5,8 +5,8 @@
       <div class="chart-wrapper">
         <div class="chart-title">
           <div class="chart-title-left">
-            <span class="info">10/14-10/20，支出总额</span>
-            <span class="amount">￥718.00</span>
+            <span class="info">{{ currentMonth }}，支出总额</span>
+            <span class="amount">￥{{ totalAmount }}</span>
           </div>
           <div class="chart-title-right">
             <span class="exponse">支出</span>
@@ -54,6 +54,7 @@ import Echarts from "@/components/Echarts.vue";
 export default class Chart extends mixins(FilterRecordList, BeautifyAccount) {
   tabsInfo = ["周", "月", "年"];
   currentMonth = "";
+  totalAmount: number = 0;
   currentChartOption: ChartOption[] = [];
   leaderboardData: ChartOption[] = [];
   created() {
@@ -64,6 +65,7 @@ export default class Chart extends mixins(FilterRecordList, BeautifyAccount) {
       (a, b) => b.value - a.value
     );
     console.log(this.currentChartOption);
+    this.totalAmount = this.getTotalAmount(this.currentMonth, "-");
   }
   get recordList() {
     return (this.$store.state as RootState).recordList;

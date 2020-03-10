@@ -19,12 +19,12 @@ class FilterRecordList extends Vue {
   }
   changeMonth(selectedMonth: string) {
     return this.createList().filter(
-      item => dayjs(item.createdAt).format("M") === selectedMonth
+      item => dayjs(item.createdAt).format('YYYY/MM') === selectedMonth
     );
   }
   getCurrentMonthOrYear(newRecordTime: string) {
     const { recordList } = this;
-    newRecordTime = newRecordTime === '月' ? 'M' : 'YYYY'
+    newRecordTime = newRecordTime === '月' ? 'YYYY/MM' : 'YYYY'
     return dayjs(recordList[recordList.length - 1].createdAt).format(newRecordTime);
   }
   getMonthOptionList(selectedMonth: string, type: string) {
@@ -42,6 +42,9 @@ class FilterRecordList extends Vue {
       }
     })
     return arr
+  }
+  getTotalAmount(selectedMonth: string, type: string) {
+    return this.getMonthOptionList(selectedMonth, type).reduce((sum, item) => { return sum + item.value }, 0)
   }
 }
 
