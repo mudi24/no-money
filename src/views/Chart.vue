@@ -25,9 +25,8 @@
             <div class="info-wrapper">
               <div class="info">
                 <span class="tag">{{ item.name }}</span>
-                <span class="amount">{{ item.value }}</span>
+                <span class="amount">{{ beautifyAccount(item.value) }}</span>
               </div>
-              <!-- <div class="line">111</div> -->
             </div>
           </li>
         </ol>
@@ -43,6 +42,7 @@ import { mixins } from "vue-class-component";
 import dayjs from "dayjs";
 import ChartHeader from "@/components/ChartHeader.vue";
 import FilterRecordList from "@/mixins/FilterRecordList";
+import BeautifyAccount from "@/mixins/BeautifyAccount";
 import Echarts from "@/components/Echarts.vue";
 
 @Component({
@@ -51,14 +51,18 @@ import Echarts from "@/components/Echarts.vue";
     Echarts
   }
 })
-export default class Chart extends mixins(FilterRecordList) {
+export default class Chart extends mixins(FilterRecordList, BeautifyAccount) {
   tabsInfo = ["周", "月", "年"];
   currentMonth = "";
   currentChartOption: ChartOption[] = [];
+  leaderboardData: ChartOption[] = [];
   created() {
     this.$store.commit("fetchRecords");
     this.currentMonth = this.getCurrentMonthOrYear("月");
     this.currentChartOption = this.getMonthOptionList(this.currentMonth, "-");
+    this.leaderboardData = this.currentChartOption.sort(
+      (a, b) => b.value - a.value
+    );
     console.log(this.currentChartOption);
   }
   get recordList() {
@@ -68,6 +72,9 @@ export default class Chart extends mixins(FilterRecordList) {
 </script>
 
 <style lang="scss" scoped>
+main {
+  margin-top: 114px;
+}
 .chart-wrapper {
   background: #ffffff;
   .chart-title {

@@ -14,7 +14,9 @@
           :key="item"
           :class="liClass(item)"
           @click="select(item)"
-        >{{item}}</li>
+        >
+          {{ item }}
+        </li>
       </ul>
     </div>
   </div>
@@ -42,11 +44,14 @@ export default class Tabs extends Vue {
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 @import "@/assets/style/helper.scss";
 .ChartHeader {
   background: #403f67;
   color: white;
+  position: absolute;
+  width: 100%;
+  z-index: 6;
   .title {
     display: flex;
     justify-content: center;
@@ -79,10 +84,12 @@ export default class Tabs extends Vue {
         justify-content: center;
         align-items: center;
         &:first-child {
+          border-right: none;
           border-top-left-radius: 10px;
           border-bottom-left-radius: 10px;
         }
         &:last-child {
+          border-left: none;
           border-top-right-radius: 10px;
           border-bottom-right-radius: 10px;
         }
