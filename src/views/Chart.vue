@@ -5,18 +5,22 @@
       <div class="chart-wrapper">
         <div class="chart-title">
           <div class="chart-title-left">
-            <span class="info">{{ currentMonth }}，支出总额</span>
+            <span class="info">{{ currentMonth }}，{{ typeText }}总额</span>
             <span class="amount">￥{{ totalAmount }}</span>
           </div>
           <div class="chart-title-right">
-            <span class="exponse">支出</span>
-            <span class="income">收入</span>
+            <span class="exponse" :class="liClass('-')" @click="changeType('-')"
+              >支出</span
+            >
+            <span class="income" :class="liClass('+')" @click="changeType('+')"
+              >收入</span
+            >
           </div>
         </div>
         <Echarts :chartOption="currentChartOption"></Echarts>
       </div>
       <div class="leaderboard">
-        <p class="title">本周支出排行榜</p>
+        <p class="title">本周{{ typeText }}排行榜</p>
         <ol v-for="item in currentChartOption" :key="item.name">
           <li class="item">
             <span class="icon-wrapper">
@@ -53,6 +57,7 @@ import Echarts from "@/components/Echarts.vue";
 })
 export default class Chart extends mixins(FilterRecordList, BeautifyAccount) {
   tabsInfo = ["周", "月", "年"];
+  type = "-";
   currentMonth = "";
   totalAmount: number = 0;
   currentChartOption: ChartOption[] = [];
@@ -60,12 +65,36 @@ export default class Chart extends mixins(FilterRecordList, BeautifyAccount) {
   created() {
     this.$store.commit("fetchRecords");
     this.currentMonth = this.getCurrentMonthOrYear("月");
-    this.currentChartOption = this.getMonthOptionList(this.currentMonth, "-");
+    this.currentChartOption = this.getMonthOptionList(
+      this.currentMonth,
+      this.type
+    );
     this.leaderboardData = this.currentChartOption.sort(
       (a, b) => b.value - a.value
     );
     console.log(this.currentChartOption);
-    this.totalAmount = this.getTotalAmount(this.currentMonth, "-");
+    this.totalAmount = this.getTotalAmount(this.currentMonth, this.type);
+  }
+  get typeText() {
+    return this.type === "-" ? "支出" : "收入";
+  }
+  liClass(type: string) {
+    return {
+      selected: this.type === type
+    };
+  }
+  changeType(type: string) {
+    this.type = type;
+    this.currentMonth = this.getCurrentMonthOrYear("月");
+    this.currentChartOption = this.getMonthOptionList(
+      this.currentMonth,
+      this.type
+    );
+    this.leaderboardData = this.currentChartOption.sort(
+      (a, b) => b.value - a.value
+    );
+    console.log(this.currentChartOption);
+    this.totalAmount = this.getTotalAmount(this.currentMonth, this.type);
   }
   get recordList() {
     return (this.$store.state as RootState).recordList;
@@ -101,14 +130,22 @@ main {
       font-size: 12px;
       .exponse {
         padding: 3px 10px;
-        border: 1px solid #000;
         border-radius: 16px;
+        &.selected {
+          border: 1px solid #403f67;
+          background: #403f67;
+          color: white;
+        }
       }
       .income {
         margin-left: 2em;
         padding: 3px 10px;
-        border: 1px solid #000;
         border-radius: 16px;
+        &.selected {
+          border: 1px solid #29c98d;
+          background: #29c98d;
+          color: white;
+        }
       }
     }
   }
