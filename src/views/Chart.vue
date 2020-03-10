@@ -13,9 +13,25 @@
             <span class="income">收入</span>
           </div>
         </div>
-        <div class="chart"></div>
+        <Echarts :chartOption="currentChartOption"></Echarts>
       </div>
-      <div class="leaderboard">本周支出排行榜</div>
+      <div class="leaderboard">
+        <p class="title">本周支出排行榜</p>
+        <ol v-for="item in currentChartOption" :key="item.name">
+          <li class="item">
+            <span class="icon-wrapper">
+              <Icon :name="item.tagValue"></Icon>
+            </span>
+            <div class="info-wrapper">
+              <div class="info">
+                <span class="tag">{{ item.name }}</span>
+                <span class="amount">{{ item.value }}</span>
+              </div>
+              <!-- <div class="line">111</div> -->
+            </div>
+          </li>
+        </ol>
+      </div>
     </main>
   </Layout>
 </template>
@@ -27,19 +43,23 @@ import { mixins } from "vue-class-component";
 import dayjs from "dayjs";
 import ChartHeader from "@/components/ChartHeader.vue";
 import FilterRecordList from "@/mixins/FilterRecordList";
+import Echarts from "@/components/Echarts.vue";
 
 @Component({
   components: {
-    ChartHeader
+    ChartHeader,
+    Echarts
   }
 })
 export default class Chart extends mixins(FilterRecordList) {
   tabsInfo = ["周", "月", "年"];
   currentMonth = "";
+  currentChartOption: ChartOption[] = [];
   created() {
     this.$store.commit("fetchRecords");
-    const currentMonth = this.getCurrentMonthOrYear("月");
-    const x = this.changeMonth(currentMonth);
+    this.currentMonth = this.getCurrentMonthOrYear("月");
+    this.currentChartOption = this.getMonthOptionList(this.currentMonth, "-");
+    console.log(this.currentChartOption);
   }
   get recordList() {
     return (this.$store.state as RootState).recordList;
@@ -83,9 +103,54 @@ export default class Chart extends mixins(FilterRecordList) {
       }
     }
   }
-  .chart {
-    width: 100%;
-    height: 120px;
+}
+.leaderboard {
+  background: #ffffff;
+  margin: 8px 0;
+  padding: 10px;
+  .title {
+    font-size: 12px;
+    padding: 8px;
+    color: gray;
+  }
+  .item {
+    display: flex;
+    padding: 8px 0;
+    .icon-wrapper {
+      width: 36px;
+      height: 36px;
+      margin: 8px;
+      background: #f4f5ff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      > .icon {
+        width: 30px;
+        height: 30px;
+        color: gray;
+      }
+    }
+    .info-wrapper {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      // justify-content: center;
+      margin-right: 16px;
+      .info {
+        display: flex;
+        justify-content: space-between;
+        padding: 6px 0;
+      }
+      &::after {
+        content: "";
+        width: 100%;
+        height: 2px;
+        border: 1px solid #85a4ff;
+        background: #85a4ff;
+        border-radius: 4px;
+      }
+    }
   }
 }
 </style>

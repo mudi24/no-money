@@ -6,6 +6,11 @@ type Month = {
   text: string;
   value: string;
 };
+type ChartOption = {
+  value: number;
+  name: string;
+  tagValue: string
+}
 type RecordItem = {
   tag: Tag;
   notes: string;

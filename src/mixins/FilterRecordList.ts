@@ -27,7 +27,22 @@ class FilterRecordList extends Vue {
     newRecordTime = newRecordTime === '月' ? 'M' : 'YYYY'
     return dayjs(recordList[recordList.length - 1].createdAt).format(newRecordTime);
   }
-
+  getMonthOptionList(selectedMonth: string, type: string) {
+    const arr: ChartOption[] = []
+    this.changeMonth(selectedMonth).filter(item => item.type === type).map(item => {
+      const chartNameList = arr.map(i => i.name)
+      if (chartNameList.indexOf(item.tag.value) >= 0) {
+        arr.filter(i => i.name === item.tag.value)[0].value += item.amount
+      } else {
+        let chartItem: ChartOption = { name: '', value: 0, tagValue: '' }
+        chartItem.name = item.tag.value
+        chartItem.tagValue = item.tag.name
+        chartItem.value = item.amount
+        arr.push(chartItem)
+      }
+    })
+    return arr
+  }
 }
 
 export default FilterRecordList
