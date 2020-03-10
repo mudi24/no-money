@@ -6,13 +6,15 @@
       @update:month="changeCurrentList($event)"
     ></HomeHeader>
     <div class="statistics">
-      <ol v-if="groupedList.length>0">
+      <ol v-if="groupedList.length > 0">
         <li v-for="(group, index) in groupedList" :key="index">
           <div class="title">
             {{ beautify(group.title) }}
             <div class="total">
-              <span>支出：{{beautifyAccount(group.totalExponse)}}</span>
-              <span class="totalIncome">收入：{{beautifyAccount(group.totalIncome)}}</span>
+              <span>支出：{{ beautifyAccount(group.totalExponse) }}</span>
+              <span class="totalIncome"
+                >收入：{{ beautifyAccount(group.totalIncome) }}</span
+              >
             </div>
           </div>
           <ol>
@@ -26,7 +28,9 @@
                   <span class="statistics-notes">{{ item.notes }}</span>
                 </span>
               </div>
-              <span class="statistics-account">{{item.type}}{{ beautifyAccount(item.amount) }}</span>
+              <span class="statistics-account"
+                >{{ item.type }}{{ beautifyAccount(item.amount) }}</span
+              >
             </li>
           </ol>
         </li>
@@ -36,7 +40,7 @@
   </Layout>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import HomeHeader from "@/components/HomeHeader.vue";
@@ -99,17 +103,17 @@ export default class Home extends mixins(BeautifyAccount, FilterRecordList) {
     if (this.recordList.length === 0) {
       recentMonth.push({
         text: dayjs().format("M") + "月",
-        value: dayjs().format("M")
+        value: dayjs().format("YYYY/MM")
       });
     } else {
       let monthList = [
         ...new Set(
-          this.createList().map(item => dayjs(item.createdAt).format("M"))
+          this.createList().map(item => dayjs(item.createdAt).format("YYYY/MM"))
         )
       ]; // 或者 return Array.from(new Set(array))
       monthList = monthList.length >= 3 ? monthList.splice(3) : monthList;
       monthList.map(item => {
-        recentMonth.push({ text: item + "月", value: item });
+        recentMonth.push({ text: dayjs(item).format("M") + "月", value: item });
       });
     }
     return recentMonth;

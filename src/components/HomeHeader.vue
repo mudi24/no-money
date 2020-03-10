@@ -3,23 +3,29 @@
     <div class="time">
       <span class="title">2020</span>
       <van-dropdown-menu>
-        <van-dropdown-item v-model="value1" :options="option1" @change="change" />
+        <van-dropdown-item
+          v-model="value1"
+          :options="option1"
+          @change="change"
+        />
       </van-dropdown-menu>
     </div>
     <div class="item income">
       <span class="title">收入</span>
-      <span class="content">￥{{beautifyAccount(total.income)}}</span>
+      <span class="content">￥{{ beautifyAccount(total.income) }}</span>
     </div>
     <div class="item expense">
       <span class="title">支出</span>
-      <span class="content">￥{{beautifyAccount(total.exponse)}}</span>
+      <span class="content">￥{{ beautifyAccount(total.exponse) }}</span>
     </div>
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
+import dayjs from "dayjs";
+
 import { mixins } from "vue-class-component";
 import BeautifyAccount from "@/mixins/BeautifyAccount";
 
@@ -31,10 +37,9 @@ export default class HomeHeader extends mixins(BeautifyAccount) {
   };
   @Prop() readonly month!: Month[];
   value1 = this.month[0].value;
-  // option1 = this.month;
   option1 = [
-    { text: "3月", value: "3" },
-    { text: "2月", value: "2" }
+    { text: "3月", value: "2020/03" },
+    { text: "2月", value: "2020/02" }
   ];
   change() {
     this.$emit("update:month", this.value1);
@@ -42,7 +47,7 @@ export default class HomeHeader extends mixins(BeautifyAccount) {
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .header {
   position: absolute;
   width: 100%;
