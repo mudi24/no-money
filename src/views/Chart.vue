@@ -1,6 +1,9 @@
 <template>
   <Layout>
-    <ChartHeader :dataSource="tabsInfo"></ChartHeader>
+    <ChartHeader
+      :dataSource="tabsInfo"
+      @update:value="changeDateType"
+    ></ChartHeader>
     <main>
       <div class="chart-wrapper">
         <div class="chart-title">
@@ -57,6 +60,7 @@ import Echarts from "@/components/Echarts.vue";
 })
 export default class Chart extends mixins(FilterRecordList, BeautifyAccount) {
   tabsInfo = ["周", "月", "年"];
+  dateType = "月";
   type = "-";
   currentMonth = "";
   totalAmount: number = 0;
@@ -64,16 +68,19 @@ export default class Chart extends mixins(FilterRecordList, BeautifyAccount) {
   leaderboardData: ChartOption[] = [];
   created() {
     this.$store.commit("fetchRecords");
-    this.currentMonth = this.getCurrentMonthOrYear("月");
-    this.currentChartOption = this.getMonthOptionList(
-      this.currentMonth,
-      this.type
-    );
+    this.getChartInfo(this.dateType, this.type);
+  }
+  get recordList() {
+    return (this.$store.state as RootState).recordList;
+  }
+  getChartInfo(selectedMonth: string, type: string) {
+    this.currentMonth = this.getCurrentMonthOrYear(selectedMonth);
+    this.currentChartOption = this.getMonthOptionList(this.currentMonth, type);
     this.leaderboardData = this.currentChartOption.sort(
       (a, b) => b.value - a.value
     );
+    this.totalAmount = this.getTotalAmount(this.currentMonth, type);
     console.log(this.currentChartOption);
-    this.totalAmount = this.getTotalAmount(this.currentMonth, this.type);
   }
   get typeText() {
     return this.type === "-" ? "支出" : "收入";
@@ -83,21 +90,13 @@ export default class Chart extends mixins(FilterRecordList, BeautifyAccount) {
       selected: this.type === type
     };
   }
+  changeDateType(dateType: string) {
+    this.dateType = dateType;
+    this.getChartInfo(dateType, this.type);
+  }
   changeType(type: string) {
     this.type = type;
-    this.currentMonth = this.getCurrentMonthOrYear("月");
-    this.currentChartOption = this.getMonthOptionList(
-      this.currentMonth,
-      this.type
-    );
-    this.leaderboardData = this.currentChartOption.sort(
-      (a, b) => b.value - a.value
-    );
-    console.log(this.currentChartOption);
-    this.totalAmount = this.getTotalAmount(this.currentMonth, this.type);
-  }
-  get recordList() {
-    return (this.$store.state as RootState).recordList;
+    this.getChartInfo(this.dateType, type);
   }
 }
 </script>

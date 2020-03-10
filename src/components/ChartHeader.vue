@@ -1,7 +1,7 @@
 <template>
   <div class="ChartHeader">
     <div class="title">
-      <p>折线统计图</p>
+      <p>{{ title }}</p>
       <span class="icon-wrapper">
         <Icon name="food"></Icon>
       </span>
@@ -29,9 +29,11 @@ import { Component, Prop } from "vue-property-decorator";
 @Component
 export default class Tabs extends Vue {
   @Prop({ required: true, type: Array }) dataSource!: string[];
-  @Prop(String) readonly value!: string;
-  @Prop(String) classPrefix?: string;
+
   currentSelected = "周";
+  get title() {
+    return this.currentSelected === "周" ? "折线统计图" : "饼图统计";
+  }
   liClass(item: string) {
     return {
       selected: item === this.currentSelected
