@@ -65,22 +65,15 @@ import clone from "@/lib/clone";
 })
 export default class Chart extends mixins(FilterRecordList, BeautifyAccount) {
   tabsInfo = ["周", "月", "年"];
-  dateType = "月";
+  dateType = "周";
   type = "-";
   currentMonth = "";
   totalAmount: number = 0;
   currentChartOption: ChartOption[] = [];
   leaderboardData: ChartOption[] = [];
   created() {
-    console.log(this.xxx());
     this.$store.commit("fetchRecords");
     this.getChartInfo(this.dateType, this.type);
-  }
-  xxx() {
-    const now = dayjs();
-    return clone(this.recordList)
-      .filter(item => item.type === this.type)
-      .filter(item => dayjs(item.createdAt).isSame(now, "week"));
   }
   get recordList() {
     return (this.$store.state as RootState).recordList;

@@ -26,15 +26,29 @@ class FilterRecordList extends Vue {
         item => dayjs(item.createdAt).format('YYYY/MM') === selectedMonth
       )
     } else {
-      this.createList().filter(
-        item => dayjs(item.createdAt).format('YYYY/MM') === selectedMonth
-      )
+      let arr = [];
+      for (let i = 0; i <= 6; i++) {
+        let currentWeekDay = dayjs()
+          .subtract(i, "day")
+          .format("MM/DD")
+
+        arr.push(...this.createList().filter(
+          item => dayjs(item.createdAt).format('MM/DD') === currentWeekDay
+        ))
+      }
+      return arr
     }
   }
   getCurrentMonthOrYear(newRecordTime: string) {
-    const { recordList } = this;
-    const newTime = newRecordTime === '月' ? 'YYYY/MM' : 'YYYY'
-    return dayjs(recordList[recordList.length - 1].createdAt).format(newTime);
+    if (newRecordTime === '周') {
+      const x = dayjs().format('MM/DD')
+      const y = dayjs().subtract(6, "day").format("MM/DD")
+      return (`${y}-${x}`)
+    } else if (newRecordTime === '月') {
+      return dayjs().format("YYYY/MM")
+    } else {
+      return dayjs().format('YYYY')
+    }
   }
   getMonthOptionList(selectedMonth: string, type: string) {
     const arr: ChartOption[] = []
