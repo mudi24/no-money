@@ -18,18 +18,27 @@ class FilterRecordList extends Vue {
     );
   }
   changeMonth(selectedMonth: string) {
-    return this.createList().filter(
-      item => dayjs(item.createdAt).format('YYYY/MM') === selectedMonth
-    );
+    if (selectedMonth.length === 4) {
+      return this.createList().filter(
+        item => dayjs(item.createdAt).format('YYYY') === selectedMonth)
+    } else if (selectedMonth.length === 7) {
+      return this.createList().filter(
+        item => dayjs(item.createdAt).format('YYYY/MM') === selectedMonth
+      )
+    } else {
+      this.createList().filter(
+        item => dayjs(item.createdAt).format('YYYY/MM') === selectedMonth
+      )
+    }
   }
   getCurrentMonthOrYear(newRecordTime: string) {
     const { recordList } = this;
-    newRecordTime = newRecordTime === '月' ? 'YYYY/MM' : 'YYYY'
-    return dayjs(recordList[recordList.length - 1].createdAt).format(newRecordTime);
+    const newTime = newRecordTime === '月' ? 'YYYY/MM' : 'YYYY'
+    return dayjs(recordList[recordList.length - 1].createdAt).format(newTime);
   }
   getMonthOptionList(selectedMonth: string, type: string) {
     const arr: ChartOption[] = []
-    this.changeMonth(selectedMonth).filter(item => item.type === type).map(item => {
+    this.changeMonth(selectedMonth)!.filter(item => item.type === type).map(item => {
       const chartNameList = arr.map(i => i.name)
       if (chartNameList.indexOf(item.tag.value) >= 0) {
         arr.filter(i => i.name === item.tag.value)[0].value += item.amount

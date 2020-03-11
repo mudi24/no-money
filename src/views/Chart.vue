@@ -20,7 +20,11 @@
             >
           </div>
         </div>
-        <Echarts :chartOption="currentChartOption"></Echarts>
+        <Echarts
+          :chartOption="currentChartOption"
+          :type="typeText"
+          :dateType="dateType"
+        ></Echarts>
       </div>
       <div class="leaderboard">
         <p class="title">本周{{ typeText }}排行榜</p>
@@ -51,6 +55,7 @@ import ChartHeader from "@/components/ChartHeader.vue";
 import FilterRecordList from "@/mixins/FilterRecordList";
 import BeautifyAccount from "@/mixins/BeautifyAccount";
 import Echarts from "@/components/Echarts.vue";
+import clone from "@/lib/clone";
 
 @Component({
   components: {
@@ -67,8 +72,15 @@ export default class Chart extends mixins(FilterRecordList, BeautifyAccount) {
   currentChartOption: ChartOption[] = [];
   leaderboardData: ChartOption[] = [];
   created() {
+    console.log(this.xxx());
     this.$store.commit("fetchRecords");
     this.getChartInfo(this.dateType, this.type);
+  }
+  xxx() {
+    const now = dayjs();
+    return clone(this.recordList)
+      .filter(item => item.type === this.type)
+      .filter(item => dayjs(item.createdAt).isSame(now, "week"));
   }
   get recordList() {
     return (this.$store.state as RootState).recordList;
@@ -80,7 +92,6 @@ export default class Chart extends mixins(FilterRecordList, BeautifyAccount) {
       (a, b) => b.value - a.value
     );
     this.totalAmount = this.getTotalAmount(this.currentMonth, type);
-    console.log(this.currentChartOption);
   }
   get typeText() {
     return this.type === "-" ? "支出" : "收入";

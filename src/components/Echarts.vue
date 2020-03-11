@@ -6,18 +6,28 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { Component, Prop, Watch } from "vue-property-decorator";
 
 @Component
 export default class Echarts extends Vue {
   @Prop() chartOption!: ChartOption;
+  @Prop() type!: string;
+  @Prop() dateType!: string;
   name = "chart";
+  @Watch("type")
+  onTypeChang() {
+    this.drawChart();
+  }
+  @Watch("dateType")
+  onChartOptionChang() {
+    this.drawChart();
+  }
   drawChart() {
     let myChart = (this as any).$echarts.init(document.getElementById("main"));
     let option = {
       title: [
         {
-          text: "支出",
+          text: this.type,
           top: "45%",
           left: "45%",
           textStyle: {
