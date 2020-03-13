@@ -79,6 +79,22 @@ class FilterRecordList extends Vue {
     }
     return arr
   }
+  getWeekLeaderboard(selectedMonth: string, type: string) {
+    let arr: ChartOption[] = []
+    this.changeMonth(selectedMonth)!.filter(item => item.type === type).map(item => {
+      const chartNameList = arr.map(i => i.name)
+      if (chartNameList.indexOf(item.tag.value) >= 0) {
+        arr.filter(i => i.name === item.tag.value)[0].value += item.amount
+      } else {
+        let chartItem: ChartOption = { name: '', value: 0, tagValue: '' }
+        chartItem.name = item.tag.value
+        chartItem.tagValue = item.tag.name
+        chartItem.value = item.amount
+        arr.push(chartItem)
+      }
+    })
+    return arr
+  }
   getTotalAmount(selectedMonth: string, type: string) {
     return this.getMonthOptionList(selectedMonth, type).reduce((sum, item) => { return sum + item.value }, 0)
   }

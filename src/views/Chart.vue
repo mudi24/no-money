@@ -28,7 +28,7 @@
       </div>
       <div class="leaderboard">
         <p class="title">本周{{ typeText }}排行榜</p>
-        <ol v-for="item in currentChartOption" :key="item.name">
+        <ol v-for="item in leaderboardData" :key="item.name">
           <li class="item">
             <span class="icon-wrapper">
               <Icon :name="item.tagValue"></Icon>
@@ -81,9 +81,11 @@ export default class Chart extends mixins(FilterRecordList, BeautifyAccount) {
   getChartInfo(selectedMonth: string, type: string) {
     this.currentMonth = this.getCurrentMonthOrYear(selectedMonth);
     this.currentChartOption = this.getMonthOptionList(this.currentMonth, type);
-    this.leaderboardData = this.currentChartOption.sort(
-      (a, b) => b.value - a.value
-    );
+    this.leaderboardData =
+      this.dateType === "周"
+        ? this.getWeekLeaderboard(this.dateType, this.type)
+        : this.currentChartOption.sort((a, b) => b.value - a.value);
+
     this.totalAmount = this.getTotalAmount(this.currentMonth, type);
   }
   get typeText() {

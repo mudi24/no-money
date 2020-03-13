@@ -179,7 +179,7 @@ export default class Echarts extends Vue {
         ]
       };
     }
-
+    myChart.clear();
     myChart.setOption(option);
   }
 
