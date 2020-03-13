@@ -28,14 +28,12 @@ class FilterRecordList extends Vue {
     } else {
       let arr = [];
       for (let i = 0; i <= 6; i++) {
-        let currentWeekDay = dayjs()
-          .subtract(i, "day")
-          .format("MM/DD")
-
+        let currentWeekDay = dayjs().subtract(i, "day").format("MM/DD")
         arr.push(...this.createList().filter(
           item => dayjs(item.createdAt).format('MM/DD') === currentWeekDay
         ))
       }
+
       return arr
     }
   }
@@ -51,19 +49,34 @@ class FilterRecordList extends Vue {
     }
   }
   getMonthOptionList(selectedMonth: string, type: string) {
-    const arr: ChartOption[] = []
-    this.changeMonth(selectedMonth)!.filter(item => item.type === type).map(item => {
-      const chartNameList = arr.map(i => i.name)
-      if (chartNameList.indexOf(item.tag.value) >= 0) {
-        arr.filter(i => i.name === item.tag.value)[0].value += item.amount
-      } else {
-        let chartItem: ChartOption = { name: '', value: 0, tagValue: '' }
-        chartItem.name = item.tag.value
-        chartItem.tagValue = item.tag.name
-        chartItem.value = item.amount
-        arr.push(chartItem)
-      }
-    })
+    let arr: ChartOption[] = []
+
+    if (selectedMonth.length === 11) {
+      this.changeMonth(selectedMonth)!.filter(item => item.type === type).map(item => {
+        const chartNameList = arr.map(i => i.name)
+        if (chartNameList.indexOf(dayjs(item.createdAt).format('MM/DD')) >= 0) {
+          arr.filter(i => i.name === dayjs(item.createdAt).format('MM/DD'))[0].value += item.amount
+        } else {
+          let chartItem: ChartOption = { name: '', value: 0 }
+          chartItem.name = dayjs(item.createdAt).format('MM/DD')
+          chartItem.value = item.amount
+          arr.push(chartItem)
+        }
+      })
+    } else {
+      this.changeMonth(selectedMonth)!.filter(item => item.type === type).map(item => {
+        const chartNameList = arr.map(i => i.name)
+        if (chartNameList.indexOf(item.tag.value) >= 0) {
+          arr.filter(i => i.name === item.tag.value)[0].value += item.amount
+        } else {
+          let chartItem: ChartOption = { name: '', value: 0, tagValue: '' }
+          chartItem.name = item.tag.value
+          chartItem.tagValue = item.tag.name
+          chartItem.value = item.amount
+          arr.push(chartItem)
+        }
+      })
+    }
     return arr
   }
   getTotalAmount(selectedMonth: string, type: string) {

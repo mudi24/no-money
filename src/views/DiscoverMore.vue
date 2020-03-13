@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div id="main" style="width: 350px;height:400px;"></div>
+    <div id="main" style="width: 350px;height:300px;"></div>
   </div>
 </template>
 
@@ -9,33 +9,118 @@ export default {
   name: "app",
   methods: {
     drawChart() {
-      // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(document.getElementById("main"));
-      // 指定图表的配置项和数据
       let option = {
-        series : [
-        {
-            name: '访问来源',
-            type: 'pie',
-            radius: '55%',
-            itemStyle: {
-                // 设置扇形的颜色
-                color: '#c23531',
-                shadowBlur: 200,
-                shadowColor: 'rgba(0, 0, 0, 0.5)'
+          title: {
+                text: 'ECharts 入门示例'
             },
-            data:[
-                {value:235, name:'餐饮',itemStyle: {color: '#a7e566'}},
-                {value:274, name:'购物',itemStyle: {color: '#85a4ff'}},
-                {value:310, name:'日用',itemStyle: {color: '#64d4ea'}},
-                {value:335, name:'交通',itemStyle: {color: '#c2a0ff'}},
-                {value:400, name:'医疗',itemStyle: {color: 'yellowgreen'}}
-            ]
-        }
-    ]
+            xAxis: {
+                data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"],
+                axisLine: {
+                  show: false
+                },
+                axisTick: {
+                  show: false
+                },
+                splitLine: {
+                lineStyle: {
+                    opacity: 1
+                }
+              },
+            },
+            yAxis: {
+              axisLine:{
+                // show:false
+                lineStyle: {
+                  opacity: 0
+                }
+              },
+              splitLine: {
+                lineStyle: {
+                    opacity: 0
+                }
+              },
+              axisTick:{
+                show:false
+              },
+              axisLabel: undefined,
+            },
 
-      };
-      // 使用刚指定的配置项和数据显示图表。
+            series: [{
+                // name: '销量',
+                type: 'line',
+                data: [5, 20, 36, 10, 10, 20],
+                markLine: { // markLine 也是同理
+                  symbol:['none','triangle'],
+                  symbolSize: [10,10],
+                  itemStyle: {
+                    normal: {
+                        borderWidth: 1,
+                        lineStyle: {
+                            opacity: 0,
+                            type: 'dotted',
+                            color: 'gray',
+                            width: 1,
+                        },
+                    },
+                      emphasis:{
+                        borderWidth: 1,
+                        lineStyle: {
+                            opacity: 1,
+                            type: 'dotted',
+                            color: 'gray',
+                            width: 2,
+                        },
+                      }
+                    },
+                    label: {
+                          normal:{
+                            show:false,
+                            formatter: '￥82.00',
+                            textStyle: {
+                                fontSize: 14,
+                                fontWeight: "bolder",
+                            },
+
+                          },
+                          emphasis:{
+                            show:true,
+                          }
+                        },
+                    data: [
+                    [{
+                        coord: ['雪纺衫', 0]
+                    }, {
+                        coord: ['雪纺衫', 40]
+                    }],
+                    [{
+                        coord: ['高跟鞋', 0]
+                    }, {
+                        coord: ['高跟鞋', 40]
+                    }],
+                    [{
+                        coord: ['衬衫', 0]
+                    }, {
+                        coord: ['衬衫', 40]
+                    }]
+                ],
+                },
+                cursor : 'pointer',
+                label: {
+                  // show:true,
+                },
+                itemStyle:{
+                  color:'#403f67'
+                },
+                lineStyle:{
+                  width:2
+                },
+                // symbol: 'star',
+                symbolSize:1,
+                // showSymbol:true,
+                smooth: 0.5,
+            }]
+          }
       myChart.setOption(option);
     }
   },

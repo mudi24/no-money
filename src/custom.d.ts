@@ -9,7 +9,7 @@ type Month = {
 type ChartOption = {
   value: number;
   name: string;
-  tagValue: string
+  tagValue?: string
 }
 type RecordItem = {
   tag: Tag;
