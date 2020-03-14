@@ -12,19 +12,13 @@
         </span>
         <span class="tagName">{{ tag.value }}</span>
       </li>
-      <li>
-        <span class="icon-wrapper">
-          <Icon name="add"></Icon>
-        </span>
-        <span class="tagName">添加</span>
-      </li>
     </ul>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { Component, Prop, Watch } from "vue-property-decorator";
 import TagHelper from "@/mixins/TagHelper";
 import { mixins } from "vue-class-component";
 import { expenseTags, incomeTags } from "@/constants/tagList";
@@ -33,22 +27,28 @@ import { expenseTags, incomeTags } from "@/constants/tagList";
 export default class Tags extends mixins(TagHelper) {
   @Prop() type!: string;
   @Prop() selectedTag!: Tag;
+  @Watch("selectedTag")
+  onTagChange() {
+    this.recordTag = this.selectedTag;
+  }
   expenseTags = expenseTags;
   incomeTags = incomeTags;
-  tag = { name: "food", value: "餐饮" };
-
+  recordTag = this.selectedTag;
   get tagList() {
     return this.type === "-" ? expenseTags : incomeTags;
   }
   selected(tag: Tag) {
-    if (this.tag.name === tag.name && this.tag.value === tag.value) {
+    if (
+      this.recordTag.name === tag.name &&
+      this.recordTag.value === tag.value
+    ) {
       return true;
     }
     return false;
   }
   toggle(tag: Tag) {
-    this.tag = tag;
-    this.$emit("update:selectedTag", this.tag);
+    this.recordTag = tag;
+    this.$emit("update:selectedTag", this.recordTag);
   }
 }
 </script>
@@ -83,8 +83,6 @@ export default class Tags extends mixins(TagHelper) {
         align-items: center;
         justify-content: center;
         .icon {
-          border-radius: 50%;
-          background: #f4f5ff;
           width: 30px;
           height: 30px;
           color: gray;
@@ -95,9 +93,7 @@ export default class Tags extends mixins(TagHelper) {
       }
       &.selected {
         .icon {
-          // color: inherit;
-          // background: #a9ceff;
-          // color: inherit;
+          color: #ffb3b3;
         }
       }
     }

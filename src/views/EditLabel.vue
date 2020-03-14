@@ -29,11 +29,10 @@
         />
       </label>
       <Tags
-        v-if="record.type === '-'"
         :type="record.type"
+        :selectedTag="selectedTag"
         @update:selectedTag="onUpdateTag"
       ></Tags>
-      <Tags v-else :type="record.type" @update:selectedTag="onUpdateTag"></Tags>
       <NumberPad
         :show="show"
         :amount.sync="record.amount"
@@ -74,7 +73,7 @@ export default class EditLabel extends Vue {
   }
   selectType(item: RecordTypeItem) {
     this.record.type = item.value;
-    this.selectedTag =
+    this.record.tag = this.selectedTag =
       this.record.type === "-"
         ? { name: "food", value: "餐饮" }
         : { name: "pay", value: "工资" };
@@ -150,15 +149,12 @@ export default class EditLabel extends Vue {
         width: 36px;
         height: 36px;
         margin: 8px;
-        background: #f4f5ff;
-        border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         > .icon {
           width: 30px;
           height: 30px;
-          color: gray;
         }
       }
       > .tagName {
