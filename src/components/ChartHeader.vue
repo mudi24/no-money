@@ -2,9 +2,6 @@
   <div class="ChartHeader">
     <div class="title">
       <p>{{ title }}</p>
-      <span class="icon-wrapper">
-        <Icon name="food"></Icon>
-      </span>
     </div>
     <div class="tabs-wrapper">
       <ul class="tabs">
@@ -60,16 +57,6 @@ export default class Tabs extends Vue {
     font-size: 16px;
     font-weight: 600;
     padding: 16px;
-    position: relative;
-    .icon-wrapper {
-      margin-right: 24px;
-      position: absolute;
-      right: 0;
-      .icon {
-        width: 20px;
-        height: 20px;
-      }
-    }
   }
   .tabs-wrapper {
     padding: 10px 0 16px 0;

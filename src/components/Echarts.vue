@@ -42,24 +42,34 @@ export default class Echarts extends Vue {
         ],
         series: [
           {
-            name: "访问来源",
             type: "pie",
             center: ["50%", "50%"],
             radius: ["30%", "60%"],
             label: {
               formatter: "{b}: {d}%"
             },
-            color: [
-              "#a7e566",
-              "#85a4ff",
-              "#64d4ea",
-              "#c2a0ff",
-              "#ffd1ad",
-              "#ffecb8"
-            ],
-            data: this.chartOption.map(i => {
-              return { name: i.name, value: this.beautifyAccount(i.value) };
-            })
+            color:
+              this.type === "支出"
+                ? [
+                    "#a7e566",
+                    "#85a4ff",
+                    "#64d4ea",
+                    "#c2a0ff",
+                    "#ffd1ad",
+                    "#ffecb8",
+                    "#ffb669",
+                    "#ff7b7c"
+                  ]
+                : [
+                    "#ffb669",
+                    "#ff7b7c",
+                    "88ebc7",
+                    "#ffedbf",
+                    "#c0ddff",
+                    "#85a4ff",
+                    "#64d4ea"
+                  ],
+            data: this.chartOption
           }
         ]
       };
@@ -104,11 +114,11 @@ export default class Echarts extends Vue {
               textStyle: {
                 fontSize: 10,
                 fontWeight: "bolder",
-                color: "#403f67"
+                color: this.type === "支出" ? "#403f67" : "#29c98d"
               }
             },
             itemStyle: {
-              color: "#cac7d5"
+              color: this.type === "支出" ? "#403f67" : "#29c98d"
             },
             lineStyle: {
               width: 2

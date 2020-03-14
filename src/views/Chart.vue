@@ -9,7 +9,11 @@
         <div class="chart-title">
           <div class="chart-title-left">
             <span class="info">{{ currentMonth }}，{{ typeText }}总额</span>
-            <span class="amount">￥{{ totalAmount }}</span>
+            <span
+              class="amount"
+              :class="{ [type === '-' ? 'exponse' : 'income']: true }"
+              >￥{{ totalAmount }}</span
+            >
           </div>
           <div class="chart-title-right">
             <span class="exponse" :class="liClass('-')" @click="changeType('-')"
@@ -127,7 +131,12 @@ main {
       .amount {
         font-size: 18px;
         font-weight: 600;
-        color: #403f67;
+        &.exponse {
+          color: #403f67;
+        }
+        &.income {
+          color: #29c98d;
+        }
       }
     }
     .chart-title-right {
