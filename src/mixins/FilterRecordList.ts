@@ -88,6 +88,7 @@ class FilterRecordList extends Vue {
         arr.push(chartItem)
       }
     })
+    arr.sort((a, b) => b.value - a.value)
     return arr
   }
   getTotalAmount(selectedMonth: string, type: string) {

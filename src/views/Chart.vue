@@ -42,6 +42,13 @@
                 <span class="tag">{{ item.name }}</span>
                 <span class="amount">{{ beautifyAccount(item.value) }}</span>
               </div>
+              <span
+                class="line"
+                ref="xxx"
+                :style="{
+                  width: (item.value / leaderboardData[0].value) * 100 + '%'
+                }"
+              ></span>
             </div>
           </li>
         </ol>
@@ -193,19 +200,17 @@ main {
       display: flex;
       flex-direction: column;
       flex: 1;
-      // justify-content: center;
       margin-right: 16px;
       .info {
         display: flex;
         justify-content: space-between;
         padding: 6px 0;
       }
-      &::after {
-        content: "";
+      .line {
         width: 100%;
-        height: 2px;
-        border: 1px solid #88eac6;
-        background: #88eac6;
+        height: 4px;
+        border: 1px solid #dae8ff;
+        background: #dae8ff;
         border-radius: 4px;
       }
     }
