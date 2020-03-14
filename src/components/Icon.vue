@@ -1,6 +1,6 @@
 <template>
-  <svg class="icon" @click="$emit('click',$event)">
-    <use :xlink:href="'#'+name" />
+  <svg class="icon" @click="$emit('click', $event)" :class="name">
+    <use :xlink:href="'#' + name" />
   </svg>
 </template>
 
@@ -25,5 +25,42 @@ export default {
   vertical-align: -0.15em;
   fill: currentColor;
   overflow: hidden;
+}
+.icon.traffic {
+  color: #a9ceff;
+}
+.icon.shopping {
+  color: #ffd1ae;
+}
+.icon.food {
+  color: #feecbe;
+}
+.icon.sports {
+  color: #ecccfe;
+}
+.icon.rent {
+  color: #ffdfc0;
+}
+.icon.medical {
+  color: #a8c2ff;
+}
+.icon.play {
+  color: #88eac6;
+}
+//
+.icon.pay {
+  color: #88eac6;
+}
+.icon.part-time {
+  color: #ff8383;
+}
+.icon.gift-money {
+  color: #ffbe6a;
+}
+.icon.reimbursement {
+  color: #ffb3b3;
+}
+.icon.bonus {
+  color: #ffcfc1;
 }
 </style>

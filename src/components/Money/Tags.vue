@@ -5,12 +5,12 @@
         v-for="tag in tagList"
         :key="tag.value"
         @click="toggle(tag)"
-        :class="{selected:selected(tag)}"
+        :class="{ selected: selected(tag) }"
       >
         <span class="icon-wrapper">
           <Icon :name="tag.name"></Icon>
         </span>
-        <span class="tagName">{{tag.value}}</span>
+        <span class="tagName">{{ tag.value }}</span>
       </li>
       <li>
         <span class="icon-wrapper">
@@ -53,7 +53,7 @@ export default class Tags extends mixins(TagHelper) {
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .tags {
   height: 60vh;
   background: #fefefe;
@@ -61,7 +61,7 @@ export default class Tags extends mixins(TagHelper) {
   flex-wrap: wrap;
   margin: 12px 0;
   padding: 8px;
-  > .current {
+  .current {
     width: 100%;
     height: 100%;
     align-content: flex-start;
@@ -75,16 +75,16 @@ export default class Tags extends mixins(TagHelper) {
       align-items: center;
       justify-content: center;
       font-size: 14px;
-      > .icon-wrapper {
+      .icon-wrapper {
         width: 36px;
         height: 36px;
         margin: 8px;
-        background: #f4f5ff;
-        border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        > .icon {
+        .icon {
+          border-radius: 50%;
+          background: #f4f5ff;
           width: 30px;
           height: 30px;
           color: gray;
@@ -95,7 +95,9 @@ export default class Tags extends mixins(TagHelper) {
       }
       &.selected {
         .icon {
-          color: #fee0a5;
+          // color: inherit;
+          // background: #a9ceff;
+          // color: inherit;
         }
       }
     }

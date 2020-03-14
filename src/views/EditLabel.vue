@@ -1,7 +1,6 @@
 <template>
   <Layout class-prefix="editLabel">
     <header class="header">
-      <button>取消</button>
       <ul class="tabs">
         <li
           class="tabs-item"
@@ -9,9 +8,10 @@
           :key="item.value"
           :class="liClass(item)"
           @click="selectType(item)"
-        >{{item.text}}</li>
+        >
+          {{ item.text }}
+        </li>
       </ul>
-      <button>保存</button>
     </header>
     <main class="content">
       <label class="amount">
@@ -19,24 +19,33 @@
           <span class="icon-wrapper">
             <Icon :name="record.tag.name"></Icon>
           </span>
-          <span class="tagName">{{record.tag.value}}</span>
+          <span class="tagName">{{ record.tag.value }}</span>
         </span>
-        <input type="text" readonly :value="record.amount" @focus="showNumberPad" />
+        <input
+          type="text"
+          readonly
+          :value="record.amount"
+          @focus="showNumberPad"
+        />
       </label>
-      <Tags v-if="record.type==='-'" :type="record.type" @update:selectedTag="onUpdateTag"></Tags>
+      <Tags
+        v-if="record.type === '-'"
+        :type="record.type"
+        @update:selectedTag="onUpdateTag"
+      ></Tags>
       <Tags v-else :type="record.type" @update:selectedTag="onUpdateTag"></Tags>
       <NumberPad
         :show="show"
         :amount.sync="record.amount"
         :notes.sync="record.notes"
         @submit="saveRecord"
-        @update:hide="hideNumberPad "
+        @update:hide="hideNumberPad"
       ></NumberPad>
     </main>
   </Layout>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import Tags from "@/components/Money/Tags.vue";
@@ -91,13 +100,13 @@ export default class EditLabel extends Vue {
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .editLabel-wrapper {
   overflow: hidden;
 }
 .header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   background: #403f67;
   padding: 16px;
   font-size: 14px;

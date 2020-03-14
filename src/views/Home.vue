@@ -28,7 +28,9 @@
                   <span class="statistics-notes">{{ item.notes }}</span>
                 </span>
               </div>
-              <span class="statistics-account"
+              <span
+                class="statistics-account"
+                :class="{ [item.type === '-' ? 'exponse' : 'income']: true }"
                 >{{ item.type }}{{ beautifyAccount(item.amount) }}</span
               >
             </li>
@@ -216,7 +218,6 @@ export default class Home extends mixins(BeautifyAccount, FilterRecordList) {
     .tag-wrapper {
       width: 40px;
       height: 40px;
-      background: #f4f5ff;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -224,7 +225,7 @@ export default class Home extends mixins(BeautifyAccount, FilterRecordList) {
       > .icon {
         width: 32px;
         height: 32px;
-        color: gray;
+        // color: gray;
       }
     }
     .statistics-info {
@@ -243,6 +244,12 @@ export default class Home extends mixins(BeautifyAccount, FilterRecordList) {
   .statistics-account {
     font-size: 18px;
     font-weight: 600;
+    &.exponse {
+      color: #403f67;
+    }
+    &.income {
+      color: #29c98d;
+    }
   }
 }
 </style>

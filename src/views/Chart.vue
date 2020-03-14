@@ -180,7 +180,6 @@ main {
       width: 36px;
       height: 36px;
       margin: 8px;
-      background: #f4f5ff;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -188,7 +187,6 @@ main {
       > .icon {
         width: 30px;
         height: 30px;
-        color: gray;
       }
     }
     .info-wrapper {
@@ -206,8 +204,8 @@ main {
         content: "";
         width: 100%;
         height: 2px;
-        border: 1px solid #85a4ff;
-        background: #85a4ff;
+        border: 1px solid #88eac6;
+        background: #88eac6;
         border-radius: 4px;
       }
     }
