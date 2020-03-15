@@ -28,7 +28,16 @@
           :chartOption="currentChartOption"
           :type="typeText"
           :dateType="dateType"
+          v-if="currentChartOption.length > 0"
         ></Echarts>
+        <div v-else class="noChart">
+          <router-link to="/EditLabel" class="record-wrapper">
+            <Icon name="notes" />
+            <p>
+              点击开始你的记账生活吧！
+            </p>
+          </router-link>
+        </div>
       </div>
       <div class="leaderboard">
         <p class="title">本周{{ typeText }}排行榜</p>
@@ -168,6 +177,27 @@ main {
           color: white;
         }
       }
+    }
+  }
+}
+.noChart {
+  display: flex;
+  justify-content: center;
+  .record-wrapper {
+    padding: 36px 16px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    .icon {
+      width: 48px;
+      height: 48px;
+      transform: rotate(-30deg);
+    }
+    p {
+      margin-top: 16px;
+      font-size: 12px;
+      color: gray;
     }
   }
 }

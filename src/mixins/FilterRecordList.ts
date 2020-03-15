@@ -33,7 +33,6 @@ class FilterRecordList extends Vue {
           item => dayjs(item.createdAt).format('MM/DD') === currentWeekDay
         ))
       }
-
       return arr
     }
   }
@@ -51,13 +50,15 @@ class FilterRecordList extends Vue {
   getMonthOptionList(selectedMonth: string, type: string) {
     let arr: ChartOption[] = []
     if (selectedMonth.length === 11) {
-      for (let i = 6; i >= 0; i--) {
-        let currentWeekDay = dayjs().subtract(i, "day").format("MM/DD")
-        arr.push({ name: currentWeekDay, value: 0 })
+      if (this.changeMonth(selectedMonth).length > 0) {
+        for (let i = 6; i >= 0; i--) {
+          let currentWeekDay = dayjs().subtract(i, "day").format("MM/DD")
+          arr.push({ name: currentWeekDay, value: 0 })
+        }
+        this.changeMonth(selectedMonth)!.filter(item => item.type === type).map(item => {
+          arr.filter(i => i.name === dayjs(item.createdAt).format('MM/DD'))[0].value += item.amount
+        })
       }
-      this.changeMonth(selectedMonth)!.filter(item => item.type === type).map(item => {
-        arr.filter(i => i.name === dayjs(item.createdAt).format('MM/DD'))[0].value += item.amount
-      })
     } else {
       this.changeMonth(selectedMonth)!.filter(item => item.type === type).map(item => {
         const chartNameList = arr.map(i => i.name)

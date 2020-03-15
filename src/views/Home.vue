@@ -212,12 +212,10 @@ export default class Home extends mixins(BeautifyAccount, FilterRecordList) {
 </script>
 
 <style lang="scss" scoped>
-.home-content {
-  .statistics {
-    height: calc(100% - 88px);
-    margin-top: 88px;
-    background: #ffffff;
-  }
+.statistics {
+  height: calc(100% - 88px);
+  margin-top: 88px;
+  background: #ffffff;
 }
 .title {
   padding: 4px 16px;
