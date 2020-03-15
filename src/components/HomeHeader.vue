@@ -18,24 +18,6 @@
       <span>￥{{ beautifyAccount(total.income) }}</span>
       <span>￥{{ beautifyAccount(total.exponse) }}</span>
     </div>
-    <!-- <div class="time">
-      <span class="title">{{ year }}</span>
-      <van-dropdown-menu>
-        <van-dropdown-item
-          v-model="value1"
-          :options="option1"
-          @change="change"
-        />
-      </van-dropdown-menu>
-    </div>
-    <div class="item income">
-      <span class="title">收入</span>
-      <span class="content">￥{{ beautifyAccount(total.income) }}</span>
-    </div>
-    <div class="item expense">
-      <span class="title">支出</span>
-      <span class="content">￥{{ beautifyAccount(total.exponse) }}</span>
-    </div> -->
   </div>
 </template>
 
@@ -75,7 +57,7 @@ export default class HomeHeader extends mixins(BeautifyAccount) {
   width: 100vw;
   .title {
     margin-top: 16px;
-    margin-left: 24px;
+    margin-left: 30px;
     display: flex;
     color: #d7d6df;
     > span {
@@ -84,7 +66,7 @@ export default class HomeHeader extends mixins(BeautifyAccount) {
   }
   .content {
     margin-top: 8px;
-    margin-left: 20px;
+    margin-left: 8px;
     margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
@@ -92,11 +74,12 @@ export default class HomeHeader extends mixins(BeautifyAccount) {
       width: 33.33%;
       display: flex;
       align-items: center;
+      justify-content: flex-start;
       font-size: 18px;
       font-weight: 600;
     }
     .van-dropdown-menu {
-      width: 45px;
+      width: 80px;
       height: 30px;
       background: #403f67;
       font-size: 16px;

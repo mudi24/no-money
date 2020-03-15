@@ -9,7 +9,12 @@
       <ol v-if="groupedList.length > 0">
         <li v-for="(group, index) in groupedList" :key="index">
           <div class="title">
-            {{ beautify(group.title) }}
+            <div>
+              {{ beautify(group.title) }}
+              <span class="weekDay">
+                {{ getWeekDay(group.title) }}
+              </span>
+            </div>
             <div class="total">
               <span>支出：{{ beautifyAccount(group.totalExponse) }}</span>
               <span class="totalIncome"
@@ -37,7 +42,14 @@
           </ol>
         </li>
       </ol>
-      <div v-else class="noResult">目前没有相关记录</div>
+      <div v-else class="noResult">
+        <router-link to="/EditLabel" class="record-wrapper">
+          <Icon name="notes" />
+          <p>
+            点击开始你的记账生活吧！
+          </p>
+        </router-link>
+      </div>
     </div>
   </Layout>
 </template>
@@ -87,6 +99,20 @@ export default class Home extends mixins(BeautifyAccount, FilterRecordList) {
     } else {
       return day.format("YYYY年MM月DD日");
     }
+  }
+  getWeekDay(string: string) {
+    const cnWeek = {
+      Mon: "周一",
+      Tue: "周二",
+      Wed: "周三",
+      Thu: "周四",
+      Fri: "周五",
+      Sat: "周六",
+      Sun: "周日"
+    };
+    type WeekDay = "Mon" | "Tue" | "Wed" | "Thu" | "Fri" | "Sat" | "Sun";
+    const day = dayjs(string).format("ddd") as WeekDay;
+    return cnWeek[day];
   }
   get recordList() {
     return (this.$store.state as RootState).recordList;
@@ -186,9 +212,12 @@ export default class Home extends mixins(BeautifyAccount, FilterRecordList) {
 </script>
 
 <style lang="scss" scoped>
-.statistics {
-  margin-top: 88px;
-  background: #ffffff;
+.home-content {
+  .statistics {
+    height: calc(100% - 88px);
+    margin-top: 88px;
+    background: #ffffff;
+  }
 }
 .title {
   padding: 4px 16px;
@@ -198,6 +227,9 @@ export default class Home extends mixins(BeautifyAccount, FilterRecordList) {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  .weekDay {
+    margin-left: 8px;
+  }
   .totalIncome {
     margin-left: 2em;
   }
@@ -248,6 +280,30 @@ export default class Home extends mixins(BeautifyAccount, FilterRecordList) {
     &.income {
       color: #29c98d;
     }
+  }
+}
+.noResult {
+  width: 200px;
+  height: 100px;
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+  .record-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .icon {
+    width: 48px;
+    height: 48px;
+    transform: rotate(-30deg);
+  }
+  p {
+    margin-top: 16px;
+    font-size: 12px;
+    color: gray;
   }
 }
 </style>
