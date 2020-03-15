@@ -27,7 +27,7 @@ export default {
   overflow: hidden;
 }
 .icon.traffic {
-  color: #a9ceff;
+  color: #a7e566;
 }
 .icon.shopping {
   color: #ffd1ae;
@@ -35,8 +35,8 @@ export default {
 .icon.food {
   color: #feecbe;
 }
-.icon.sports {
-  color: #ecccfe;
+.icon.social {
+  color: #c2a0ff;
 }
 .icon.rent {
   color: #ffdfc0;
@@ -46,6 +46,15 @@ export default {
 }
 .icon.play {
   color: #88eac6;
+}
+.icon.daily-consume {
+  color: #ecccfe;
+}
+.icon.water-electricity {
+  color: #64d4ea;
+}
+.icon.communication {
+  color: #504fac;
 }
 //
 .icon.pay {
@@ -62,5 +71,8 @@ export default {
 }
 .icon.bonus {
   color: #ffcfc1;
+}
+.icon.investment {
+  color: #a9ceff;
 }
 </style>

@@ -51,7 +51,6 @@ import dayjs from "dayjs";
 import { mixins } from "vue-class-component";
 import BeautifyAccount from "@/mixins/BeautifyAccount";
 import FilterRecordList from "@/mixins/FilterRecordList";
-import { Tag } from "vant";
 
 type ResultItem = {
   title: string;
@@ -188,7 +187,7 @@ export default class Home extends mixins(BeautifyAccount, FilterRecordList) {
 
 <style lang="scss" scoped>
 .statistics {
-  margin-top: 12vh;
+  margin-top: 88px;
   background: #ffffff;
 }
 .title {
@@ -225,7 +224,6 @@ export default class Home extends mixins(BeautifyAccount, FilterRecordList) {
       > .icon {
         width: 32px;
         height: 32px;
-        // color: gray;
       }
     }
     .statistics-info {

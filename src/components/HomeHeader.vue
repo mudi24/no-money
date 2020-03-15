@@ -1,7 +1,25 @@
 <template>
   <div class="header">
-    <div class="time">
-      <span class="title">2020</span>
+    <div class="title">
+      <span class="time">{{ year }}</span>
+      <span class="time">收入</span>
+      <span class="time">支出</span>
+    </div>
+    <div class="content">
+      <span>
+        <van-dropdown-menu>
+          <van-dropdown-item
+            v-model="value1"
+            :options="option1"
+            @change="change"
+          />
+        </van-dropdown-menu>
+      </span>
+      <span>￥{{ beautifyAccount(total.income) }}</span>
+      <span>￥{{ beautifyAccount(total.exponse) }}</span>
+    </div>
+    <!-- <div class="time">
+      <span class="title">{{ year }}</span>
       <van-dropdown-menu>
         <van-dropdown-item
           v-model="value1"
@@ -17,7 +35,7 @@
     <div class="item expense">
       <span class="title">支出</span>
       <span class="content">￥{{ beautifyAccount(total.exponse) }}</span>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -25,7 +43,6 @@
 import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import dayjs from "dayjs";
-
 import { mixins } from "vue-class-component";
 import BeautifyAccount from "@/mixins/BeautifyAccount";
 
@@ -37,6 +54,7 @@ export default class HomeHeader extends mixins(BeautifyAccount) {
   };
   @Prop() readonly month!: Month[];
   value1 = this.month[0].value;
+  year = this.month[0].value.split("/")[0];
   option1 = [
     { text: "3月", value: "2020/03" },
     { text: "2月", value: "2020/02" }
@@ -50,47 +68,42 @@ export default class HomeHeader extends mixins(BeautifyAccount) {
 <style lang="scss" scoped>
 .header {
   position: absolute;
-  width: 100%;
   display: flex;
-  flex-wrap: nowrap;
+  flex-direction: column;
   background: #403f67;
   color: white;
-  height: 12vh;
-  > .item {
-    margin: 8px;
+  width: 100vw;
+  .title {
+    margin-top: 16px;
+    margin-left: 24px;
     display: flex;
-    flex-direction: column;
-    width: 35%;
-    > .title {
-      color: #d7d6df;
-      font-size: 16px;
+    color: #d7d6df;
+    > span {
+      width: 33.33%;
     }
-    > .content {
-      padding: 8px 0;
+  }
+  .content {
+    margin-top: 8px;
+    margin-left: 20px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    > span {
+      width: 33.33%;
+      display: flex;
+      align-items: center;
+      font-size: 18px;
       font-weight: 600;
     }
-  }
-  .time {
-    width: 30%;
-    text-align: start;
-    margin: 8px 8px 0 8px;
-    > .title {
-      color: #d7d6df;
+    .van-dropdown-menu {
+      width: 45px;
+      height: 30px;
+      background: #403f67;
       font-size: 16px;
-      margin: 8px 16px;
-    }
-  }
-  .van-dropdown-menu {
-    margin-top: 5px;
-    margin-bottom: 10px;
-    background: #403f67;
-    width: 70%;
-    height: 30px;
-    font-size: 16px;
-    font-weight: 600;
-
-    &.van-hairline--top-bottom {
-      position: static; // 可能是 VantUI 的bug
+      font-weight: 600;
+      &.van-hairline--top-bottom {
+        position: static; // 可能是 VantUI 的bug
+      }
     }
   }
 }
