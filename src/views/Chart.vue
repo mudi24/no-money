@@ -71,10 +71,10 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import { mixins } from "vue-class-component";
 import dayjs from "dayjs";
-import ChartHeader from "@/components/ChartHeader.vue";
+import ChartHeader from "@/components/Chart/ChartHeader.vue";
 import FilterRecordList from "@/mixins/FilterRecordList";
 import BeautifyAccount from "@/mixins/BeautifyAccount";
-import Echarts from "@/components/Echarts.vue";
+import Echarts from "@/components/Chart/Echarts.vue";
 import clone from "@/lib/clone";
 
 @Component({

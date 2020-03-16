@@ -24,7 +24,7 @@ import Vue from "vue";
 import { Component, Prop } from "vue-property-decorator";
 
 @Component
-export default class Tabs extends Vue {
+export default class ChartHeader extends Vue {
   @Prop({ required: true, type: Array }) dataSource!: string[];
 
   currentSelected = "周";

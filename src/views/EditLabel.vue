@@ -13,7 +13,7 @@
         </li>
       </ul>
     </header>
-    <main class="content">
+    <main class="tags-content">
       <label class="amount">
         <span class="name">
           <span class="icon-wrapper">
@@ -47,8 +47,8 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import Tags from "@/components/Money/Tags.vue";
-import NumberPad from "@/components/Money/NumberPad.vue";
+import Tags from "@/components/EditLabel/Tags.vue";
+import NumberPad from "@/components/EditLabel/NumberPad.vue";
 import recordTypeList from "@/constants/recordTypeList";
 import { expenseTags, incomeTags } from "@/constants/tagList";
 
@@ -137,11 +137,14 @@ export default class EditLabel extends Vue {
     background: #fefefe;
   }
 }
-.content {
+.tags-content {
   margin-top: 60.8px;
   background: #f0f3f6;
+  display: flex;
   .amount {
+    position: absolute;
     background: #fefefe;
+    width: 100%;
     padding: 8px;
     display: flex;
     justify-content: space-between;
@@ -170,6 +173,10 @@ export default class EditLabel extends Vue {
       background: transparent;
       border: none;
     }
+  }
+  .tags {
+    margin-top: 76px;
+    flex-grow: 1;
   }
 }
 </style>

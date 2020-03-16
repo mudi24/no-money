@@ -1,5 +1,7 @@
 <template>
-  <div class>UserInfo</div>
+  <Layout>
+    <div>用户信息</div>
+  </Layout>
 </template>
 
 <script>
@@ -12,5 +14,4 @@ export default {
 };
 </script>
 
-<style lang='' scoped>
-</style>
+<style lang="scss" scoped></style>

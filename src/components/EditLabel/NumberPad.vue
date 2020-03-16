@@ -8,9 +8,9 @@
         :value="value"
         @input="onValueChange($event.target.value)"
       />
-      <span class="close" @click="hide">
+      <div class="close" @click.prevent="hide">
         <Icon name="close"></Icon>
-      </span>
+      </div>
     </label>
     <div class="buttons">
       <button @click="inputContent">1</button>
@@ -161,6 +161,7 @@ export default class NumberPad extends Vue {
       justify-content: center;
     }
     input {
+      display: inline-block;
       height: 40px;
       flex-grow: 1;
       background: transparent;

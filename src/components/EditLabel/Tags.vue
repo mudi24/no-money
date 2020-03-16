@@ -55,21 +55,23 @@ export default class Tags extends mixins(TagHelper) {
 
 <style lang="scss" scoped>
 .tags {
+  // height: calc(92vh-60.8px-76px);
   height: 60vh;
+  overflow: auto;
   background: #fefefe;
   display: flex;
   flex-wrap: wrap;
   margin: 12px 0;
   padding: 8px;
   .current {
-    width: 100%;
+    width: 100vw;
     height: 100%;
     align-content: flex-start;
     display: flex;
     flex-wrap: wrap;
     > li {
       width: 20%;
-      height: 20%;
+      height: 12vh;
       display: flex;
       flex-direction: column;
       align-items: center;
