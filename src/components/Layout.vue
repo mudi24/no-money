@@ -21,7 +21,7 @@ export default {
   height: 100vh;
   position: relative;
   .content {
-    height: 92vh;
+    // height: 92vh;
     overflow: auto;
     flex-grow: 1;
     margin-bottom: 8vh;

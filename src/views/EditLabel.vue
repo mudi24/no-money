@@ -104,6 +104,9 @@ export default class EditLabel extends Vue {
   overflow: hidden;
 }
 .header {
+  position: absolute;
+  top: 0;
+  width: 100vw;
   display: flex;
   justify-content: center;
   background: #403f67;
@@ -116,7 +119,6 @@ export default class EditLabel extends Vue {
   }
   .tabs {
     display: flex;
-
     li {
       padding: 3px 16px;
       border: 1px solid white;
@@ -136,6 +138,7 @@ export default class EditLabel extends Vue {
   }
 }
 .content {
+  margin-top: 60.8px;
   background: #f0f3f6;
   .amount {
     background: #fefefe;
@@ -168,11 +171,5 @@ export default class EditLabel extends Vue {
       border: none;
     }
   }
-
-  // .numberPad {
-  //   position: absolute;
-  //   left: 0;
-  //   bottom: -50%;
-  // }
 }
 </style>

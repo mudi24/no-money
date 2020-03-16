@@ -8,6 +8,9 @@
         :value="value"
         @input="onValueChange($event.target.value)"
       />
+      <span class="close" @click="hide">
+        <Icon name="close"></Icon>
+      </span>
     </label>
     <div class="buttons">
       <button @click="inputContent">1</button>
@@ -31,7 +34,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { Component, Prop, Watch } from "vue-property-decorator";
 
 @Component
 export default class NumberPad extends Vue {
@@ -42,6 +45,9 @@ export default class NumberPad extends Vue {
   value = this.notes;
   onValueChange(value: string) {
     this.$emit("update:notes", value);
+  }
+  hide() {
+    this.$emit("update:hide");
   }
   inputContent(event: MouseEvent) {
     const button = event.target as HTMLButtonElement; //断言写法1
@@ -58,6 +64,22 @@ export default class NumberPad extends Vue {
       this.$emit("update:amount", this.output);
       return;
     }
+    if ("0123456789".indexOf(input) >= 0) {
+      if (this.output.indexOf("+") < 0) {
+        if (
+          this.output.indexOf(".") >= 0 &&
+          this.output.split(".")[1].length >= 2
+        ) {
+          return;
+        }
+      } else {
+        const array = this.output.split("+");
+        if (array[1].indexOf(".") >= 0 && array[1].split(".")[1].length >= 2) {
+          return;
+        }
+      }
+    }
+
     if (this.output.indexOf(".") >= 0 && input === ".") {
       if (this.output.indexOf("+") >= 0) {
         if (this.output.split("+")[1].indexOf(".") < 0) {
@@ -87,12 +109,12 @@ export default class NumberPad extends Vue {
       const array = this.output.split("+");
       this.output = (parseFloat(array[0]) + parseFloat(array[1])).toString();
     }
-    this.output = parseFloat(this.output).toString() + "+";
+    this.output = this.output + "+";
     this.$emit("update:amount", this.output);
   }
   ok() {
     if (this.output === "0" || this.output === "0.0") {
-      this.$emit("update:hide");
+      this.hide();
       return;
     }
     let last = this.output.slice(-1);
@@ -110,13 +132,14 @@ export default class NumberPad extends Vue {
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 @import "~@/assets/style/helper.scss";
 
 .numberPad {
   background: #393960;
   color: white;
   width: 100%;
+  height: 40vh;
   position: absolute;
   left: 0;
   bottom: -40vh;
@@ -125,22 +148,38 @@ export default class NumberPad extends Vue {
     bottom: 8vh;
   }
   .notes {
+    width: 100%;
     height: 8vh;
     font-size: 16px;
     display: flex;
     align-items: center;
-    padding-left: 16px;
+    justify-content: space-between;
     > .name {
-      padding-right: 16px;
+      margin-left: 24px;
+      margin-right: 8px;
+      display: flex;
+      justify-content: center;
     }
     input {
       height: 40px;
       flex-grow: 1;
       background: transparent;
       border: none;
-      padding-right: 16px;
+    }
+    > .close {
+      width: 20vw;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .icon {
+        width: 28px;
+        height: 28px;
+        color: white;
+      }
     }
   }
+
   .output {
     @extend %clearFix;
     @extend %innerShadow;
@@ -162,6 +201,20 @@ export default class NumberPad extends Vue {
         background: #25c489;
         float: right;
       }
+    }
+  }
+}
+@media (max-width: 360px) {
+  .numberPad > .notes > .name {
+    width: 25vw;
+    margin-left: 16px;
+    margin-right: 0;
+  }
+  .numberPad > .notes > .close {
+    margin-right: 8px;
+    > .icon {
+      width: 24px;
+      height: 24px;
     }
   }
 }
