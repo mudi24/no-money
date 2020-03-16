@@ -1,6 +1,6 @@
 <template>
-  <div id="chart">
-    <div id="main" style="width: 100%vw;height:30vh;"></div>
+  <div id="myEcharts">
+    <div id="moneyChart" style="width: 100%vw;height:30vh;"></div>
   </div>
 </template>
 
@@ -13,7 +13,7 @@ export default class Echarts extends Vue {
   @Prop() chartOption!: ChartOption[];
   @Prop() type!: string;
   @Prop() dateType!: string;
-  name = "chart";
+  name = "myEcharts";
   xDate = this.chartOption.map(i => i.name);
   @Watch("type")
   onTypeChang() {
@@ -24,7 +24,9 @@ export default class Echarts extends Vue {
     this.drawChart();
   }
   drawChart() {
-    let myChart = (this as any).$echarts.init(document.getElementById("main"));
+    let myChart = (this as any).$echarts.init(
+      document.getElementById("moneyChart")
+    );
     let option;
     if (this.dateType === "月" || this.dateType === "年") {
       option = {
@@ -55,19 +57,21 @@ export default class Echarts extends Vue {
                     "#85a4ff",
                     "#64d4ea",
                     "#c2a0ff",
-                    "#ffd1ad",
-                    "#ffecb8",
-                    "#ffb669",
+                    "#ffbe6a",
+                    "#ff8383",
+                    "#a9ceff",
+                    "#88eac6",
+                    "#ffd1ae",
                     "#ff7b7c"
                   ]
                 : [
                     "#ffb669",
                     "#ff7b7c",
                     "88ebc7",
-                    "#ffedbf",
                     "#c0ddff",
                     "#85a4ff",
-                    "#64d4ea"
+                    "#64d4ea",
+                    "#c2a0ff"
                   ],
             data: this.chartOption
           }
