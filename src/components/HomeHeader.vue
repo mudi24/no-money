@@ -37,10 +37,11 @@ export default class HomeHeader extends mixins(BeautifyAccount) {
   @Prop() readonly month!: Month[];
   value1 = this.month[0].value;
   year = this.month[0].value.split("/")[0];
-  option1 = [
-    { text: "3月", value: "2020/03" },
-    { text: "2月", value: "2020/02" }
-  ];
+  option1 = this.month;
+  // option1 = [
+  //   { text: "3月", value: "2020/03" },
+  //   { text: "2月", value: "2020/02" }
+  // ];
   change() {
     this.$emit("update:month", this.value1);
   }

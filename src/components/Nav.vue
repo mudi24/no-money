@@ -1,18 +1,18 @@
 <template>
   <nav>
-    <router-link to="/Home" class="item" active-class="selected">
+    <router-link to="/home" class="item" active-class="selected">
       <Icon name="home" />主页
     </router-link>
-    <router-link to="/Chart" class="item" active-class="selected">
+    <router-link to="/chart" class="item" active-class="selected">
       <Icon name="chart" />图表
     </router-link>
-    <router-link to="/EditLabel" class="addTag" active-class="selected">
+    <router-link to="/editLabel" class="addTag" active-class="selected">
       <Icon name="add" />
     </router-link>
-    <router-link to="/DiscoverMore" class="item" active-class="selected">
+    <router-link to="/discover" class="item" active-class="selected">
       <Icon name="find" />发现
     </router-link>
-    <router-link to="/UserInfo" class="item" active-class="selected">
+    <router-link to="/user" class="item" active-class="selected">
       <Icon name="me" />我的
     </router-link>
   </nav>

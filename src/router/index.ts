@@ -4,8 +4,11 @@ import Home from '@/views/Home.vue';
 import Chart from '@/views/Chart.vue';
 import Notfound from '@/views/Notfound.vue';
 import EditLabel from '@/views/EditLabel.vue';
-import DiscoverMore from '@/views/DiscoverMore.vue';
-import UserInfo from '@/views/UserInfo.vue';
+import Discover from '@/views/Discover.vue';
+import User from '@/views/User.vue';
+import UserInfo from "@/components/User/UserInfo.vue";
+import Version from "@/components/User/Version.vue";
+
 
 Vue.use(VueRouter);
 
@@ -26,11 +29,18 @@ const routes = [
     path: '/editLabel',
     component: EditLabel
   }, {
-    path: '/discoverMore',
-    component: DiscoverMore
+    path: '/discover',
+    component: Discover
+  }, {
+    path: '/user',
+    component: User,
   }, {
     path: '/userInfo',
-    component: UserInfo
+    component: UserInfo,
+  },
+  {
+    path: '/version',
+    component: Version
   },
   {
     path: '*',

@@ -1,7 +1,5 @@
 <template>
-  <Layout>
-    <div>用户信息</div>
-  </Layout>
+  <div class="">版本介绍</div>
 </template>
 
 <script>
@@ -14,4 +12,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="" scoped></style>
