@@ -222,6 +222,7 @@ export default class Home extends mixins(BeautifyAccount, FilterRecordList) {
   font-size: 12px;
   font-weight: 600;
   color: gray;
+  background: #f5f5f5;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -238,6 +239,7 @@ export default class Home extends mixins(BeautifyAccount, FilterRecordList) {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: #fff;
 }
 
 .record {
