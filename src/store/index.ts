@@ -13,9 +13,21 @@ const store = new Vuex.Store({
     tagList: [],
     currentTag: undefined,
     createRecordError: null,
-    createTagError: null
+    createTagError: null,
+    user: {
+      nickname: '爱吃猫的鱼',
+      gender: '男',
+      tel: '13912345678'
+    }
   } as RootState,
   mutations: {
+    fetchUser(state) {
+      state.user = window.localStorage.getItem('user') ? JSON.parse(window.localStorage.getItem('user')!) : state.user
+    },
+    saveUser(state) {
+      window.localStorage.setItem('user', JSON.stringify(state.user))
+      window.alert('保存成功')
+    },
     fetchRecords(state) {
       state.recordList = JSON.parse(window.localStorage.getItem('recordList') || '[]')
     },

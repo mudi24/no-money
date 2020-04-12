@@ -2,7 +2,7 @@
   <div class="header">
     <div class="img-wrapper">
       <img src="@/assets/images/avatar.jpg" alt="头像" />
-      <span>爱吃猫的鱼</span>
+      <span>{{ $store.state.user.nickname }}</span>
     </div>
     <div class="">
       <div class="count">
@@ -24,7 +24,11 @@ import Vue from "vue";
 import { Component } from "vue-property-decorator";
 
 @Component
-export default class UserHeader extends Vue {}
+export default class UserHeader extends Vue {
+  created() {
+    this.$store.commit("fetchUser");
+  }
+}
 </script>
 
 <style lang="scss" scoped>

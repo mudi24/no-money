@@ -6,13 +6,14 @@ import store from './store'
 import Nav from './components/Nav.vue'
 import Layout from './components/Layout.vue'
 import Icon from './components/Icon.vue'
-import { DropdownMenu, DropdownItem, } from "vant";
+import { DropdownMenu, DropdownItem, ActionSheet } from "vant";
 import echarts from "echarts";
 
 Vue.prototype.$echarts = echarts;
 
 Vue.use(DropdownMenu);
 Vue.use(DropdownItem);
+Vue.use(ActionSheet);
 
 
 Vue.config.productionTip = false

@@ -23,6 +23,11 @@ type Tag = {
   name: string,
   value: string
 }
+type User = {
+  nickname: string,
+  gender: string,
+  tel: string
+}
 type TagListModel = {
   data: Tag[]
   fetch: () => Tag[]
@@ -35,6 +40,7 @@ type RootState = {
   recordList: RecordItem[],
   tagList: Tag[],
   currentTag?: Tag,
+  user: User,
   createRecordError: Error | null,
   createTagError: Error | null,
 }
