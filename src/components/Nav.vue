@@ -10,7 +10,7 @@
       <Icon name="add" />
     </router-link>
     <router-link to="/discover" class="item" active-class="selected">
-      <Icon name="find" />发现
+      <Icon name="find" />分享
     </router-link>
     <router-link to="/user" class="item" active-class="selected">
       <Icon name="me" />我的

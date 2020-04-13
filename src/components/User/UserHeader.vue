@@ -4,7 +4,7 @@
       <img src="@/assets/images/avatar.jpg" alt="头像" />
       <span>{{ $store.state.user.nickname }}</span>
     </div>
-    <div class="">
+    <div>
       <div class="count">
         <span>688</span>
         <span>460</span>
