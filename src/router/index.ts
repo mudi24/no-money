@@ -7,6 +7,7 @@ import EditLabel from '@/views/EditLabel.vue';
 import Discover from '@/views/Discover.vue';
 import User from '@/views/User.vue';
 import UserInfo from "@/components/User/UserInfo.vue";
+import UserMessage from "@/components/User/UserMessage.vue";
 import Version from "@/components/User/Version.vue";
 
 
@@ -37,6 +38,10 @@ const routes = [
   }, {
     path: '/userInfo',
     component: UserInfo,
+  },
+  {
+    path: '/message',
+    component: UserMessage,
   },
   {
     path: '/version',

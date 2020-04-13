@@ -1,12 +1,7 @@
 <template>
   <div class="info">
     <header>
-      <div>
-        <router-link to="/user" class="icon-wrapper">
-          <Icon name="left"></Icon>
-        </router-link>
-        <p>个人信息</p>
-      </div>
+      <TopBar title="个人信息" />
     </header>
     <main>
       <ul>
@@ -70,8 +65,11 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
+import TopBar from "./TopBar.vue";
 
-@Component
+@Component({
+  components: { TopBar }
+})
 export default class UserInfo extends Vue {
   user: User = {
     nickname: "",
@@ -163,7 +161,7 @@ main {
     font-weight: bold;
     outline: none;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
   }
 }
 </style>

@@ -32,11 +32,11 @@
             <Icon name="right"></Icon>
           </li>
         </router-link>
-        <router-link to="/version">
+        <router-link to="/message">
           <li>
             <span>
-              <Icon name="help"></Icon>
-              <span>帮助</span>
+              <Icon name="message"></Icon>
+              <span>我的消息</span>
             </span>
             <Icon name="right"></Icon>
           </li>
@@ -45,8 +45,9 @@
           <li class="last">
             <span>
               <Icon name="version"></Icon>
-              <span>版本介绍</span>
+              <span>关于钱夕夕</span>
             </span>
+            <span class="version">v1.0.0</span>
             <Icon name="right"></Icon>
           </li>
         </router-link>
@@ -109,6 +110,9 @@ ul {
     span > .icon {
       margin-right: 12px;
       color: #cbb2fb;
+    }
+    .version {
+      color: gray;
     }
   }
   .last {
