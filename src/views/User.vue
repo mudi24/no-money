@@ -4,19 +4,22 @@
     <div class="bill">
       <p>账单</p>
       <div>
-        <span class="month"><span>04</span>月</span>
+        <span class="month"
+          ><span>{{ month }}</span
+          >月</span
+        >
         <ol>
           <li>
             <span>收入</span>
-            <span>0.00</span>
+            <span>{{ beautifyAccount(totalIncome) }}</span>
           </li>
           <li>
             <span>支出</span>
-            <span>0.00</span>
+            <span>{{ beautifyAccount(totalExponse) }}</span>
           </li>
           <li>
             <span>结余</span>
-            <span>0.00</span>
+            <span>{{ beautifyAccount(remaining) }}</span>
           </li>
         </ol>
       </div>
@@ -59,14 +62,39 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
+import dayjs from "dayjs";
+import { mixins } from "vue-class-component";
 import UserHeader from "@/components/User/UserHeader.vue";
+import BeautifyAccount from "@/mixins/BeautifyAccount";
 
 @Component({
   components: {
     UserHeader
   }
 })
-export default class User extends Vue {}
+export default class User extends mixins(BeautifyAccount) {
+  month = "";
+  totalIncome = 0;
+  totalExponse = 0;
+  remaining = 0;
+  created() {
+    this.month = dayjs().format("MM");
+    this.$store.commit("fetchRecords");
+    this.totalIncome = this.getMonthTotal(this.month, "+");
+    this.totalExponse = this.getMonthTotal(this.month, "-");
+    this.remaining = this.totalIncome - this.totalExponse;
+  }
+  getMonthTotal(month: string, type: string) {
+    return this.$store.state.recordList
+      .filter(
+        (i: RecordItem) =>
+          dayjs(i.createdAt).format("MM") === month && i.type === type
+      )
+      .reduce((sum: number, item: RecordItem) => {
+        return sum + item.amount;
+      }, 0);
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -92,9 +120,12 @@ export default class User extends Vue {}
       flex: 1;
       justify-content: space-between;
       li {
-        padding: 0 4vw;
+        padding: 0 3vw;
         display: flex;
         flex-direction: column;
+        span {
+          text-align: center;
+        }
       }
     }
   }

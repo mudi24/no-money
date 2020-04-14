@@ -11,7 +11,7 @@
         <span>1369</span>
       </div>
       <div class="type">
-        <span>已连续打卡</span>
+        <span>已连续记账</span>
         <span>记账总天数</span>
         <span>记账总笔数</span>
       </div>
