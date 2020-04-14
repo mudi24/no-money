@@ -18,7 +18,8 @@ const store = new Vuex.Store({
       nickname: '爱吃猫的鱼',
       gender: '男',
       tel: '13912345678'
-    }
+    },
+    continuousPunch: 0
   } as RootState,
   mutations: {
     fetchUser(state) {
@@ -27,6 +28,16 @@ const store = new Vuex.Store({
     saveUser(state) {
       window.localStorage.setItem('user', JSON.stringify(state.user))
       window.alert('保存成功')
+    },
+    fetchPunch(state) {
+      state.continuousPunch = window.localStorage.getItem('continuousPunch') ? JSON.parse(window.localStorage.getItem('continuousPunch')!) : state.continuousPunch
+    },
+    setPunch(state) {
+      state.continuousPunch += 1
+      store.commit('savePunch')
+    },
+    savePunch(state) {
+      window.localStorage.setItem('continuousPunch', JSON.stringify(state.continuousPunch))
     },
     fetchRecords(state) {
       state.recordList = JSON.parse(window.localStorage.getItem('recordList') || '[]')

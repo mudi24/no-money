@@ -18,16 +18,16 @@
             <div class="count">
               <span>
                 <strong>
-                  688
+                  {{ this.$store.state.continuousPunch }}
                 </strong>
                 天
               </span>
               <span>
-                <strong>460</strong>
+                <strong>{{ totalDay().length }}</strong>
                 天
               </span>
               <span>
-                <strong>1369</strong>
+                <strong>{{ recordList.length }}</strong>
                 笔
               </span>
             </div>
@@ -63,10 +63,32 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
+import { mixins } from "vue-class-component";
+import dayjs from "dayjs";
+import clone from "@/lib/clone";
 
 @Component
 export default class Discover extends Vue {
   hide = true;
+  created() {
+    this.$store.commit("fetchRecords");
+    this.$store.commit("fetchPunch");
+  }
+  get recordList() {
+    return (this.$store.state as RootState).recordList;
+  }
+  createList() {
+    return clone(this.recordList).sort(
+      (a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf()
+    );
+  }
+  totalDay() {
+    return [
+      ...new Set(
+        this.createList().map(i => dayjs(i.createdAt).format("YYYY/MM/DD"))
+      )
+    ];
+  }
 }
 </script>
 

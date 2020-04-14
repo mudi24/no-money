@@ -47,6 +47,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
+import dayjs from "dayjs";
 import Tags from "@/components/EditLabel/Tags.vue";
 import NumberPad from "@/components/EditLabel/NumberPad.vue";
 import recordTypeList from "@/constants/recordTypeList";
@@ -63,8 +64,10 @@ export default class EditLabel extends Vue {
   };
   selectedTag = { name: "food", value: "餐饮" };
   recordTypeList = recordTypeList;
+
   created() {
     this.$store.commit("fetchRecords");
+    this.$store.commit("fetchPunch");
   }
   liClass(item: RecordTypeItem) {
     return {
@@ -91,6 +94,22 @@ export default class EditLabel extends Vue {
     this.$store.commit("createRecord", this.record);
     if (this.$store.state.createRecordError === null) {
       window.alert("已保存");
+    }
+    let maxContinuousPunch: number = 1;
+    if (this.$store.state.continuousPunch === 0) {
+      this.$store.commit("setPunch");
+    } else {
+      const currentTime = dayjs(dayjs(new Date()).format("YYYY/MM/DD")).unix();
+      const array = this.$store.state.recordList.map((i: RecordItem) =>
+        dayjs(i.createdAt).unix()
+      );
+      if (array.indexOf(currentTime - 86400) >= 0) {
+        this.$store.commit("setPunch");
+        maxContinuousPunch = this.$store.state.continuousPunch;
+      } else {
+        this.$store.state.continuousPunch = maxContinuousPunch;
+        maxContinuousPunch = 1;
+      }
     }
     this.record.amount = 0;
     this.record.notes = "";

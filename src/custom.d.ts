@@ -41,6 +41,7 @@ type RootState = {
   tagList: Tag[],
   currentTag?: Tag,
   user: User,
+  continuousPunch: number,
   createRecordError: Error | null,
   createTagError: Error | null,
 }

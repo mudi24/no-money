@@ -6,9 +6,9 @@
     </div>
     <div>
       <div class="count">
-        <span>688</span>
-        <span>460</span>
-        <span>1369</span>
+        <span> {{ this.$store.state.continuousPunch }}</span>
+        <span>{{ totalDay().length }}</span>
+        <span>{{ recordList.length }}</span>
       </div>
       <div class="type">
         <span>已连续记账</span>
@@ -22,11 +22,30 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
+import dayjs from "dayjs";
+import clone from "@/lib/clone";
 
 @Component
 export default class UserHeader extends Vue {
   created() {
     this.$store.commit("fetchUser");
+    this.$store.commit("fetchRecords");
+    this.$store.commit("fetchPunch");
+  }
+  get recordList() {
+    return (this.$store.state as RootState).recordList;
+  }
+  createList() {
+    return clone(this.recordList).sort(
+      (a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf()
+    );
+  }
+  totalDay() {
+    return [
+      ...new Set(
+        this.createList().map(i => dayjs(i.createdAt).format("YYYY/MM/DD"))
+      )
+    ];
   }
 }
 </script>
