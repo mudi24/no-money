@@ -73,13 +73,15 @@ type ResultItem = {
 type Result = ResultItem[];
 
 @Component({
-  components: { HomeHeader }
+  components: { HomeHeader },
 })
 export default class Home extends mixins(BeautifyAccount, FilterRecordList) {
   currentRecordList: RecordItem[] = [];
   created() {
     this.$store.commit("fetchRecords");
-    const currentMonth = this.getRecentMonth()[0].value; // 初始化记录列表（重要）
+    const currentMonth = dayjs(this.getRecentMonth()[0].value).format(
+      "YYYY/MM"
+    ); // 初始化记录列表（重要）
     this.changeCurrentList(currentMonth);
   }
   changeCurrentList(selectedMonth: string) {
@@ -108,7 +110,7 @@ export default class Home extends mixins(BeautifyAccount, FilterRecordList) {
       Thu: "周四",
       Fri: "周五",
       Sat: "周六",
-      Sun: "周日"
+      Sun: "周日",
     };
     type WeekDay = "Mon" | "Tue" | "Wed" | "Thu" | "Fri" | "Sat" | "Sun";
     const day = dayjs(string).format("ddd") as WeekDay;
@@ -119,7 +121,7 @@ export default class Home extends mixins(BeautifyAccount, FilterRecordList) {
   }
   getDayTotal(group: ResultItem, type: string) {
     return group.items
-      .filter(item => item.type === type)
+      .filter((item) => item.type === type)
       .reduce((sum, item) => {
         return sum + item.amount;
       }, 0);
@@ -130,16 +132,18 @@ export default class Home extends mixins(BeautifyAccount, FilterRecordList) {
     if (this.recordList.length === 0) {
       recentMonth.push({
         text: dayjs().format("M") + "月",
-        value: dayjs().format("YYYY/MM")
+        value: dayjs().format("YYYY/MM/DD"),
       });
     } else {
       let monthList = [
         ...new Set(
-          this.createList().map(item => dayjs(item.createdAt).format("YYYY/MM"))
-        )
+          this.createList().map((item) =>
+            dayjs(item.createdAt).format("YYYY/MM/DD")
+          )
+        ),
       ]; // 或者 return Array.from(new Set(array))
       monthList = monthList.length >= 3 ? monthList.splice(3) : monthList;
-      monthList.map(item => {
+      monthList.map((item) => {
         recentMonth.push({ text: dayjs(item).format("M") + "月", value: item });
       });
     }
@@ -162,8 +166,8 @@ export default class Home extends mixins(BeautifyAccount, FilterRecordList) {
         title: dayjs(currentRecordList[0].createdAt).format("YYYY-MM-DD"),
         totalExponse: 0,
         totalIncome: 0,
-        items: [currentRecordList[0]]
-      }
+        items: [currentRecordList[0]],
+      },
     ];
     for (let i = 1; i < currentRecordList.length; i++) {
       const current = currentRecordList[i];
@@ -176,12 +180,12 @@ export default class Home extends mixins(BeautifyAccount, FilterRecordList) {
           title: dayjs(current.createdAt).format("YYYY-MM-DD"),
           totalExponse: 0,
           totalIncome: 0,
-          items: [current]
+          items: [current],
         });
       }
     }
 
-    result.forEach(group => {
+    result.forEach((group) => {
       group.totalExponse = this.getDayTotal(group, "-");
       group.totalIncome = this.getDayTotal(group, "+");
     });
@@ -191,8 +195,8 @@ export default class Home extends mixins(BeautifyAccount, FilterRecordList) {
   getMonthTotal() {
     let total = { exponse: 0, income: 0 };
     if (this.groupedList !== []) {
-      const exponseList = this.groupedList.map(group => group.totalExponse);
-      const incomeList = this.groupedList.map(group => group.totalIncome);
+      const exponseList = this.groupedList.map((group) => group.totalExponse);
+      const incomeList = this.groupedList.map((group) => group.totalIncome);
       if (exponseList.length !== 0) {
         total.exponse = exponseList.reduce((sum, item) => {
           return (sum as number) + (item as number);
